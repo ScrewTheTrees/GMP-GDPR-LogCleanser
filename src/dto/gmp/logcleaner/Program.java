@@ -31,8 +31,8 @@ public class Program {
         String workingDir = Paths.get("").toAbsolutePath().toString();
         System.out.println("Current relative path is: " + workingDir);
 
-        File input = new File(workingDir+"\\in\\LocalLogZips\\2016-11-19.tsv.gz");
-        File output = new File(workingDir+"\\in\\test.txt");
+        File input = new File(workingDir+"\\input\\LocalLogZips\\2016-11-19.tsv.gz");
+        File output = new File(workingDir+"\\input\\test.txt");
         try {
             GZipFile.decompressGzip(input, output);
         } catch (IOException e) {
