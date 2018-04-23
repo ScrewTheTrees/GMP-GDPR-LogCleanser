@@ -2,6 +2,7 @@ package dto.gmp.logcleaner;
 
 import dto.gmp.logcleaner.Config.CleanerMode;
 import dto.gmp.logcleaner.Config.LogCleanerConfig;
+import dto.gmp.logcleaner.Services.GZip.GZipFile;
 
 import java.io.File;
 import java.io.IOException;
