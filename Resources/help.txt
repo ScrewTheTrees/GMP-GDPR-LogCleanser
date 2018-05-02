@@ -1,4 +1,3 @@
 
 -help       - Get to this menu
--logurl @   - AWS server to grab logs from.
--logpath \  - Local Directory to get logs from
+

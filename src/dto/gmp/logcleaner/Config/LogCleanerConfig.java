@@ -1,14 +1,38 @@
 package dto.gmp.logcleaner.Config;
 
-import java.net.URL;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class LogCleanerConfig {
 
+    private static String configFile = "config.properties";
+
     private CleanerMode cleanerMode = CleanerMode.NONE;
-    private String logDirectory;
-    private URL AWSServer;
+    private String logDirectory = "";
+    private String AWSServer = "";
+    private String AWSPassword = "";
 
+    public LogCleanerConfig() {
+        this(configFile);
+    }
+    public LogCleanerConfig(String configFileToReadFrom) {
+        try {
+            InputStream stream = new FileInputStream(configFileToReadFrom);
+            Properties properties = new Properties();
+            properties.load(stream);
+            matchPropertiesToThis(properties);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void matchPropertiesToThis(Properties properties) {
+        logDirectory = properties.getProperty("log-directory", "");
+        AWSServer = properties.getProperty("aws-server", "");
+        AWSPassword = properties.getProperty("aws-password", "");
+    }
 
     public CleanerMode getCleanerMode() {
         return cleanerMode;
@@ -26,12 +50,20 @@ public class LogCleanerConfig {
         this.logDirectory = logDirectory;
     }
 
-    public URL getAWSServer() {
+    public String getAWSServer() {
         return AWSServer;
     }
 
-    public void setAWSServer(URL AWSServer) {
+    public void setAWSServer(String AWSServer) {
         this.AWSServer = AWSServer;
+    }
+
+    public String getAWSPassword() {
+        return AWSPassword;
+    }
+
+    public void setAWSPassword(String AWSPassword) {
+        this.AWSPassword = AWSPassword;
     }
 }
 
