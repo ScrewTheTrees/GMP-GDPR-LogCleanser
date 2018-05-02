@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LogCompressionService {
+
     
 
     public void ExtractAllFiles(String fromDirectory, String toDirectory) {
@@ -19,7 +20,7 @@ public class LogCompressionService {
             directoryPath = directoryPath.substring(0, directoryPath.lastIndexOf("\\"));
 
             int fileOffset = file.getAbsolutePath().replace(fromDirectory, toDirectory).lastIndexOf(".");
-            String fileNewName = file.getAbsolutePath().replace(fromDirectory, toDirectory).substring(0, fileOffset) + ".txt";
+            String fileNewName = file.getPath().replace(fromDirectory, toDirectory).substring(0, fileOffset) + ".txt";
 
             new File(directoryPath).mkdirs();
             gZipService.DecompressFile(file, new File(fileNewName));

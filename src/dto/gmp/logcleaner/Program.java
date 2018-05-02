@@ -2,11 +2,8 @@ package dto.gmp.logcleaner;
 
 import dto.gmp.logcleaner.Config.CleanerMode;
 import dto.gmp.logcleaner.Config.LogCleanerConfig;
-import dto.gmp.logcleaner.Services.GZip.GZipFile;
 import dto.gmp.logcleaner.Services.LogCompressionService;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.file.Paths;
 
 public class Program {
@@ -33,7 +30,7 @@ public class Program {
         String workingDir = Paths.get("").toAbsolutePath().toString();
         System.out.println("Current relative path is: " + workingDir);
 
-        LogCompressionService logCompressionService = new LogCompressionService(logCleanerConfig);
+        LogCompressionService logCompressionService = new LogCompressionService();
         logCompressionService.ExtractAllFiles(workingDir + logCleanerConfig.getLogDirectory(), workingDir + logCleanerConfig.getAWSDirectory());
     }
 }

@@ -1,3 +1,4 @@
 
--help       - Get to this menu
--useaws		- Use Amazon AWS server instead of just local files
+-help       	- Get to this menu
+--uselocal		- !Important, Use local files defined
+--useaws		- !Important, Use Amazon AWS server

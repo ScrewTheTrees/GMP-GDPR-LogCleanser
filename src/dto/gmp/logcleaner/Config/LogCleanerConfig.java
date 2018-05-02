@@ -10,10 +10,13 @@ public class LogCleanerConfig {
     private static String configFile = "config.properties";
 
     private CleanerMode cleanerMode = CleanerMode.NONE;
+    private String workingDirectory = "";
     private String logDirectory = "";
+    private String logOutputDirectory = "";
     private String AWSServer = "";
     private String AWSPassword = "";
     private String AWSDirectory = "";
+    private String AWSOutputDirectory = "";
 
     public LogCleanerConfig() {
         this(configFile);
@@ -31,10 +34,13 @@ public class LogCleanerConfig {
     }
 
     private void matchPropertiesToThis(Properties properties) {
+        workingDirectory = properties.getProperty("working-directory", "");
         logDirectory = properties.getProperty("log-directory", "");
+        logOutputDirectory = properties.getProperty("log-output-directory", "");
         AWSServer = properties.getProperty("aws-server", "");
         AWSPassword = properties.getProperty("aws-password", "");
         AWSDirectory = properties.getProperty("aws-directory", "");
+        AWSOutputDirectory = properties.getProperty("aws-output-directory", "");
     }
 
     public CleanerMode getCleanerMode() {
@@ -72,6 +78,30 @@ public class LogCleanerConfig {
     public String getAWSDirectory() { return AWSDirectory; }
 
     public void setAWSDirectory(String AWSDirectory) { this.AWSDirectory = AWSDirectory; }
+
+    public String getWorkingDirectory() {
+        return workingDirectory;
+    }
+
+    public void setWorkingDirectory(String workingDirectory) {
+        this.workingDirectory = workingDirectory;
+    }
+
+    public String getLogOutputDirectory() {
+        return logOutputDirectory;
+    }
+
+    public void setLogOutputDirectory(String logOutputDirectory) {
+        this.logOutputDirectory = logOutputDirectory;
+    }
+
+    public String getAWSOutputDirectory() {
+        return AWSOutputDirectory;
+    }
+
+    public void setAWSOutputDirectory(String AWSOutputDirectory) {
+        this.AWSOutputDirectory = AWSOutputDirectory;
+    }
 }
 
 
