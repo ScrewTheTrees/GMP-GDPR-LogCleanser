@@ -8,12 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LogCompressionService {
-
-    private final LogCleanerConfig logCleanerConfig;
-
-    public LogCompressionService(LogCleanerConfig logCleanerConfig) {
-        this.logCleanerConfig = logCleanerConfig;
-    }
+    
 
     public void ExtractAllFiles(String fromDirectory, String toDirectory) {
         List<File> files = getAllFilesInDirectory(fromDirectory);
