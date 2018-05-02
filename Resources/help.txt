@@ -1,3 +1,3 @@
 
 -help       - Get to this menu
-
+-useaws		- Use Amazon AWS server instead of just local files

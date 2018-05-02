@@ -3,6 +3,7 @@ package dto.gmp.logcleaner;
 import dto.gmp.logcleaner.Config.CleanerMode;
 import dto.gmp.logcleaner.Config.LogCleanerConfig;
 import dto.gmp.logcleaner.Services.GZip.GZipFile;
+import dto.gmp.logcleaner.Services.LogCompressionService;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,12 +33,7 @@ public class Program {
         String workingDir = Paths.get("").toAbsolutePath().toString();
         System.out.println("Current relative path is: " + workingDir);
 
-        File input = new File(workingDir+"\\input\\LocalLogZips\\2016-11-19.tsv.gz");
-        File output = new File(workingDir+"\\input\\test.txt");
-        try {
-            GZipFile.decompressGzip(input, output);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        LogCompressionService logCompressionService = new LogCompressionService(logCleanerConfig);
+        logCompressionService.ExtractAllFiles(workingDir + logCleanerConfig.getLogDirectory(), workingDir + logCleanerConfig.getAWSDirectory());
     }
 }

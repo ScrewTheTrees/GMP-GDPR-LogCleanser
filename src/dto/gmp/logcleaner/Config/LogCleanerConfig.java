@@ -13,10 +13,12 @@ public class LogCleanerConfig {
     private String logDirectory = "";
     private String AWSServer = "";
     private String AWSPassword = "";
+    private String AWSDirectory = "";
 
     public LogCleanerConfig() {
         this(configFile);
     }
+
     public LogCleanerConfig(String configFileToReadFrom) {
         try {
             InputStream stream = new FileInputStream(configFileToReadFrom);
@@ -32,6 +34,7 @@ public class LogCleanerConfig {
         logDirectory = properties.getProperty("log-directory", "");
         AWSServer = properties.getProperty("aws-server", "");
         AWSPassword = properties.getProperty("aws-password", "");
+        AWSDirectory = properties.getProperty("aws-directory", "");
     }
 
     public CleanerMode getCleanerMode() {
@@ -65,6 +68,10 @@ public class LogCleanerConfig {
     public void setAWSPassword(String AWSPassword) {
         this.AWSPassword = AWSPassword;
     }
+
+    public String getAWSDirectory() { return AWSDirectory; }
+
+    public void setAWSDirectory(String AWSDirectory) { this.AWSDirectory = AWSDirectory; }
 }
 
 

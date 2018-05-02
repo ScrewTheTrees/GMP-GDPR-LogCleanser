@@ -11,6 +11,7 @@ public class GZipService {
             e.printStackTrace();
         }
     }
+
     public void DecompressFile(File input, File output) {
         try {
             GZipFile.decompressGzip(input, output);
@@ -26,6 +27,7 @@ public class GZipService {
             e.printStackTrace();
         }
     }
+
     public void CompressFile(File input, File output) {
         try {
             GZipFile.compressGZIP(input, output);
