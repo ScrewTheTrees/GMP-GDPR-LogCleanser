@@ -1,5 +1,5 @@
 
--help       	- Get to this menu
+-help       	- Get this information
 --uselocal		- !Important, Use local files defined
 --useaws		- !Important, Use Amazon AWS server
 -configfile ""	- Use another configuration file.

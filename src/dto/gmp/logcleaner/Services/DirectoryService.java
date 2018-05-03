@@ -28,6 +28,7 @@ public class DirectoryService {
     List<File> getAllDirectoriesInDirectoryAndSubdirectories(String directoryName) {
         File directory = new File(directoryName);
         ArrayList<File> directories = new ArrayList<>();
+        directories.add(new File(directoryName));
 
         // get all the files from a directory
         File[] fList = directory.listFiles();
@@ -36,7 +37,6 @@ public class DirectoryService {
                 if (file.isFile()) {
                     //Ignore
                 } else if (file.isDirectory()) {
-                    directories.add(file);
                     directories.addAll(getAllDirectoriesInDirectoryAndSubdirectories(file.getAbsolutePath()));
                 }
             }

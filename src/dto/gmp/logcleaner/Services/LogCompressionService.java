@@ -18,7 +18,8 @@ public class LogCompressionService {
 
 
         for (File directory : directories) {
-            directory.mkdirs();
+            File newDir = new File(directory.getAbsolutePath().replace(fromDirectory, toDirectory));
+            newDir.mkdirs();
         }
 
         for (File file : files) {

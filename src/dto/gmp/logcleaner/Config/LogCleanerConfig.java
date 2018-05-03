@@ -1,5 +1,6 @@
 package dto.gmp.logcleaner.Config;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,10 +45,12 @@ public class LogCleanerConfig {
         AWSDirectory = properties.getProperty("aws-directory", "");
         AWSOutputDirectory = properties.getProperty("aws-output-directory", "");
 
-        readjustPropertiesIfLocal();
+        readjustProperties();
     }
 
-    private void readjustPropertiesIfLocal() {
+    private void readjustProperties() {
+        baseDirectory = new File(baseDirectory).getAbsolutePath();
+        
         if (workingDirectory.startsWith("\\")) workingDirectory = baseDirectory + workingDirectory;
         if (logDirectory.startsWith("\\")) logDirectory = baseDirectory + logDirectory;
         if (logOutputDirectory.startsWith("\\")) logOutputDirectory = baseDirectory + logOutputDirectory;

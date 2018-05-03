@@ -28,10 +28,12 @@ public class Program {
             System.out.println(arg);
         }
 
-        String workingDir = Paths.get("").toAbsolutePath().toString();
-        System.out.println("Current relative path is: " + workingDir);
+        String workingDir = logCleanerConfig.getBaseDirectory();
+        String loggingDir = logCleanerConfig.getLogDirectory();
+        System.out.println("Current path is: " + workingDir);
+        System.out.println("Current logging path is: " + loggingDir);
 
         LogCompressionService logCompressionService = new LogCompressionService();
-        logCompressionService.ExtractAllFiles(workingDir + logCleanerConfig.getLogDirectory(), workingDir + logCleanerConfig.getAWSDirectory());
+        logCompressionService.ExtractAllFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getLogOutputDirectory());
     }
 }
