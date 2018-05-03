@@ -2,6 +2,7 @@ package dto.gmp.logcleaner;
 
 import dto.gmp.logcleaner.Config.CleanerMode;
 import dto.gmp.logcleaner.Config.LogCleanerConfig;
+import dto.gmp.logcleaner.Services.CleanerService;
 import dto.gmp.logcleaner.Services.LogCompressionService;
 
 import java.nio.file.Paths;

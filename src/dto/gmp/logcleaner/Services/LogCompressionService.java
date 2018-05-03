@@ -28,7 +28,7 @@ public class LogCompressionService {
     }
 
 
-    private List<File> getAllFilesInDirectory(String directoryName) {
+    List<File> getAllFilesInDirectory(String directoryName) {
         File directory = new File(directoryName);
         ArrayList<File> files = new ArrayList<>();
 
