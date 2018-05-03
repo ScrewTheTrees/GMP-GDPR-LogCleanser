@@ -1,13 +1,11 @@
 package dto.gmp.logcleaner.Services;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CleanerServiceTest {
 
@@ -29,11 +27,11 @@ class CleanerServiceTest {
     }
 
     @Test
-    void getEmailsFromString_Should_Be_3_Because_Of_Merged_Emails() {
+    void getEmailsFromString_Should_Be_2_Because_Of_Merged_Invalid_Emails() {
         String testString = "fredrik.grimmenhag@gmp-systems.comclarisse.dubois@media-path.com\t-\tSenior Analyst\n" +
                 "susanne.elias@media-path.com,balazs.kaposi@dentsuaegis.com\t-\tInvestment Director";
         List<String> emails = service.getEmailsFromString(testString);
-        assertEquals(emails.size(), 3);
+        assertEquals(emails.size(), 2);
     }
 
     @Test

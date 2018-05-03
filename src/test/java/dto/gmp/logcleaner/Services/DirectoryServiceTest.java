@@ -1,7 +1,7 @@
 package dto.gmp.logcleaner.Services;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.io.File;
 import java.util.List;
