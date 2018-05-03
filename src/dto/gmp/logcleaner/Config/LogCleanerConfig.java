@@ -7,9 +7,10 @@ import java.util.Properties;
 
 public class LogCleanerConfig {
 
-    private static String configFile = "config.properties";
+    private static String defaultConfigFile = "config.properties";
 
     private CleanerMode cleanerMode = CleanerMode.NONE;
+    private String baseDirectory = "";
     private String workingDirectory = "";
     private String logDirectory = "";
     private String logOutputDirectory = "";
@@ -19,7 +20,7 @@ public class LogCleanerConfig {
     private String AWSOutputDirectory = "";
 
     public LogCleanerConfig() {
-        this(configFile);
+        this(defaultConfigFile);
     }
 
     public LogCleanerConfig(String configFileToReadFrom) {
@@ -34,6 +35,7 @@ public class LogCleanerConfig {
     }
 
     private void matchPropertiesToThis(Properties properties) {
+        baseDirectory = properties.getProperty("base-directory", "");
         workingDirectory = properties.getProperty("working-directory", "");
         logDirectory = properties.getProperty("log-directory", "");
         logOutputDirectory = properties.getProperty("log-output-directory", "");
@@ -41,6 +43,16 @@ public class LogCleanerConfig {
         AWSPassword = properties.getProperty("aws-password", "");
         AWSDirectory = properties.getProperty("aws-directory", "");
         AWSOutputDirectory = properties.getProperty("aws-output-directory", "");
+
+        readjustPropertiesIfLocal();
+    }
+
+    private void readjustPropertiesIfLocal() {
+        if (workingDirectory.startsWith("\\")) workingDirectory = baseDirectory + workingDirectory;
+        if (logDirectory.startsWith("\\")) logDirectory = baseDirectory + logDirectory;
+        if (logOutputDirectory.startsWith("\\")) logOutputDirectory = baseDirectory + logOutputDirectory;
+        if (AWSDirectory.startsWith("\\")) AWSDirectory = baseDirectory + AWSDirectory;
+        if (AWSOutputDirectory.startsWith("\\")) AWSOutputDirectory = baseDirectory + AWSOutputDirectory;
     }
 
     public CleanerMode getCleanerMode() {
@@ -75,9 +87,13 @@ public class LogCleanerConfig {
         this.AWSPassword = AWSPassword;
     }
 
-    public String getAWSDirectory() { return AWSDirectory; }
+    public String getAWSDirectory() {
+        return AWSDirectory;
+    }
 
-    public void setAWSDirectory(String AWSDirectory) { this.AWSDirectory = AWSDirectory; }
+    public void setAWSDirectory(String AWSDirectory) {
+        this.AWSDirectory = AWSDirectory;
+    }
 
     public String getWorkingDirectory() {
         return workingDirectory;
@@ -101,6 +117,10 @@ public class LogCleanerConfig {
 
     public void setAWSOutputDirectory(String AWSOutputDirectory) {
         this.AWSOutputDirectory = AWSOutputDirectory;
+    }
+
+    public String getBaseDirectory() {
+        return baseDirectory;
     }
 }
 
