@@ -2,7 +2,10 @@ package dto.gmp.logcleaner;
 
 import dto.gmp.logcleaner.Config.CleanerMode;
 import dto.gmp.logcleaner.Config.LogCleanerConfig;
+import dto.gmp.logcleaner.Services.CleanerService;
 import dto.gmp.logcleaner.Services.LogCompressionService;
+
+import java.io.File;
 
 public class LogCleaner {
     public static void main(String[] args) {
@@ -12,6 +15,9 @@ public class LogCleaner {
 
     private String[] args;
     private LogCleanerConfig logCleanerConfig;
+    LogCompressionService logCompressionService = new LogCompressionService();
+    CleanerService cleanerService = new CleanerService();
+
 
     private LogCleaner(String[] args) {
         this.args = args;
@@ -25,7 +31,9 @@ public class LogCleaner {
             System.out.println(arg);
         }
 
-        LogCompressionService logCompressionService = new LogCompressionService();
+
         logCompressionService.ExtractAllFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getLogOutputDirectory());
+        cleanerService.cleanLogFile(new File(logCleanerConfig.getLogOutputDirectory()+"\\2017-05-26.tsv.txt"),new File(""));
+
     }
 }

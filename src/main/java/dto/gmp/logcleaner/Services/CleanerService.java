@@ -1,6 +1,8 @@
 package dto.gmp.logcleaner.Services;
 
-import java.io.File;
+import org.apache.commons.validator.routines.EmailValidator;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -32,7 +34,25 @@ public class CleanerService {
 
     public boolean cleanLogFile(File fileToClean, File fileToSave) {
         //TODO: Actually clean the log file
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fileToClean));
+            String line;
+            int lineNum = 0;
 
+            while ((line = br.readLine()) != null) {
+                lineNum += 1;
+                List<String> emails = getEmailsFromString(line);
+                if (emails.size() > 0) {
+                    System.out.println("At line \"" + lineNum + "\", " + emails.size() + " email/s has been found: " + emails.get(0));
+                }
+
+                emails.clear();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 
@@ -41,7 +61,9 @@ public class CleanerService {
         ArrayList<String> emails = new ArrayList<String>();
         Matcher m = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+").matcher(getEmailString);
         while (m.find()) {
-            emails.add(m.group());
+            if (EmailValidator.getInstance().isValid(m.group())) {
+                emails.add(m.group());
+            }
         }
         return emails;
     }
@@ -50,12 +72,14 @@ public class CleanerService {
     String getFileExtension(String file) throws Exception {
         return getFileExtension(new File(file));
     }
+
     String getFileExtension(File file) throws Exception {
         int fileOffset = file.getAbsolutePath().lastIndexOf(".");
         int backslashOffset = file.getAbsolutePath().lastIndexOf("\\");
 
         if (fileOffset < 0) throw new Exception("No file extension found, no dot found: " + file.getAbsolutePath());
-        if (fileOffset < backslashOffset) throw new Exception("No file extension found, no dot after last \\: " + file.getAbsolutePath());
+        if (fileOffset < backslashOffset)
+            throw new Exception("No file extension found, no dot after last \\: " + file.getAbsolutePath());
 
         return (file.getPath().substring(fileOffset, file.getPath().length()));
     }

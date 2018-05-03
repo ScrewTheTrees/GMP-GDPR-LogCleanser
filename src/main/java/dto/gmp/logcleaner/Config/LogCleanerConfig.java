@@ -26,7 +26,7 @@ public class LogCleanerConfig {
 
     public LogCleanerConfig(String configFileToReadFrom) {
         try {
-            InputStream stream = new FileInputStream(configFileToReadFrom);
+            InputStream stream = new FileInputStream(new File(configFileToReadFrom).getAbsoluteFile());
             Properties properties = new Properties();
             properties.load(stream);
             matchPropertiesToThis(properties);
