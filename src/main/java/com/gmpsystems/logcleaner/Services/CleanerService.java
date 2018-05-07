@@ -37,7 +37,6 @@ public class CleanerService {
 
     public boolean cleanLogFile(File fileToClean, File fileToSave, CleanerCleanseInformation cleanerCleanseInformation) {
         boolean success = true;
-        //TODO: Actually clean the log file
 
         new File(fileToSave.getParent()).mkdirs();
         try {
@@ -49,12 +48,10 @@ public class CleanerService {
             while ((line = br.readLine()) != null) {
                 lineNum += 1;
                 List<String> emails = getEmailsFromString(line);
+
                 if (emails.size() > 0) {
                     line = handleEmailString(lineNum, line, emails, cleanerCleanseInformation);
                 }
-
-                emails.clear();
-
 
                 bw.write(line + "\n");
             }
@@ -88,8 +85,8 @@ public class CleanerService {
     }
 
     private String handleRemoveCase(String line, List<String> emails) {
-        for (String s : emails) {
-            line = line.replaceAll(s, "");
+        for (String email : emails) {
+            line = line.replaceAll(email, "");
         }
         return line;
     }

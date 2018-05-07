@@ -2,6 +2,7 @@ package com.gmpsystems.logcleaner;
 
 import com.gmpsystems.logcleaner.Config.CleanerCleanseInformation;
 import com.gmpsystems.logcleaner.Config.CleanerMode;
+import com.gmpsystems.logcleaner.Config.CleanerFieldType;
 import com.gmpsystems.logcleaner.Config.LogCleanerConfig;
 import com.gmpsystems.logcleaner.Services.DirectoryService;
 import com.gmpsystems.logcleaner.Services.LogCompressionService;
@@ -17,8 +18,8 @@ public class LogCleaner {
     }
 
     private String[] args;
-    private LogCleanerConfig logCleanerConfig;
-    private CleanerCleanseInformation cleanerCleanseInformation;
+    private LogCleanerConfig logCleanerConfig = new LogCleanerConfig();
+    private CleanerCleanseInformation cleanerCleanseInformation = new CleanerCleanseInformation();
 
 
     private LogCompressionService logCompressionService = new LogCompressionService();
@@ -28,9 +29,12 @@ public class LogCleaner {
 
     public LogCleaner(String[] args) {
         this.args = args;
-        this.logCleanerConfig = new LogCleanerConfig();
-        this.cleanerCleanseInformation = new CleanerCleanseInformation();
         this.cleanerCleanseInformation.setCleanerMode(CleanerMode.MOCK_LOG);
+
+        this.cleanerCleanseInformation.setDeleteFromField(CleanerFieldType.EMAIL);
+
+        this.cleanerCleanseInformation.setReplaceFromField(CleanerFieldType.EMAIL);
+        this.cleanerCleanseInformation.setReplaceToField(CleanerFieldType.OBJECTID);
     }
 
 
