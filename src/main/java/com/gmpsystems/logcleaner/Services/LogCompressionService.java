@@ -30,5 +30,23 @@ public class LogCompressionService {
         }
     }
 
+    public void CompressAllFiles(String fromDirectory, String toDirectory) {
+        List<File> files = directoryService.getAllFilesInDirectoryAndSubdirectories(fromDirectory);
+        List<File> directories = directoryService.getAllDirectoriesInDirectoryAndSubdirectories(fromDirectory);
+
+
+        for (File directory : directories) {
+            File newDir = new File(directory.getAbsolutePath().replace(fromDirectory, toDirectory));
+            newDir.mkdirs();
+        }
+
+        for (File file : files) {
+            int fileOffset = file.getAbsolutePath().replace(fromDirectory, toDirectory).lastIndexOf(".");
+            String fileNewName = file.getPath().replace(fromDirectory, toDirectory).substring(0, fileOffset) + ".gz";
+
+            gZipService.CompressFile(file, new File(fileNewName));
+        }
+    }
+
 
 }

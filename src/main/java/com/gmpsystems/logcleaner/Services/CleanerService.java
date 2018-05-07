@@ -34,8 +34,11 @@ public class CleanerService {
 
     public boolean cleanLogFile(File fileToClean, File fileToSave) {
         //TODO: Actually clean the log file
+
+        new File(fileToSave.getParent()).mkdirs();
         try {
             BufferedReader br = new BufferedReader(new FileReader(fileToClean));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(fileToSave));
             String line;
             int lineNum = 0;
 
@@ -47,8 +50,12 @@ public class CleanerService {
                 }
 
                 emails.clear();
-            }
 
+
+                bw.write(line);
+                bw.write("\n");
+            }
+            bw.close();
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -57,7 +64,7 @@ public class CleanerService {
     }
 
 
-    List<String> getEmailsFromString(String getEmailString) {
+    public List<String> getEmailsFromString(String getEmailString) {
         ArrayList<String> emails = new ArrayList<String>();
         Matcher m = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+").matcher(getEmailString);
         while (m.find()) {
@@ -69,11 +76,11 @@ public class CleanerService {
     }
 
 
-    String getFileExtension(String file) throws Exception {
+    public String getFileExtension(String file) throws Exception {
         return getFileExtension(new File(file));
     }
 
-    String getFileExtension(File file) throws Exception {
+    public String getFileExtension(File file) throws Exception {
         int fileOffset = file.getAbsolutePath().lastIndexOf(".");
         int backslashOffset = file.getAbsolutePath().lastIndexOf("\\");
 

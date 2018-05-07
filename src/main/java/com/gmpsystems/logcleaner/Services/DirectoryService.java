@@ -7,7 +7,7 @@ import java.util.List;
 public class DirectoryService {
 
     
-    List<File> getAllFilesInDirectoryAndSubdirectories(String directoryName) {
+    public List<File> getAllFilesInDirectoryAndSubdirectories(String directoryName) {
         File directory = new File(directoryName);
         ArrayList<File> files = new ArrayList<>();
 
@@ -25,7 +25,7 @@ public class DirectoryService {
         return files;
     }
 
-    List<File> getAllDirectoriesInDirectoryAndSubdirectories(String directoryName) {
+    public List<File> getAllDirectoriesInDirectoryAndSubdirectories(String directoryName) {
         File directory = new File(directoryName);
         ArrayList<File> directories = new ArrayList<>();
         directories.add(new File(directoryName));

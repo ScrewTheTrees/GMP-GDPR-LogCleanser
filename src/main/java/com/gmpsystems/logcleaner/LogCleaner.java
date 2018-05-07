@@ -2,6 +2,7 @@ package com.gmpsystems.logcleaner;
 
 import com.gmpsystems.logcleaner.Config.CleanerMode;
 import com.gmpsystems.logcleaner.Config.LogCleanerConfig;
+import com.gmpsystems.logcleaner.Services.DirectoryService;
 import com.gmpsystems.logcleaner.Services.LogCompressionService;
 import com.gmpsystems.logcleaner.Services.CleanerService;
 
@@ -15,25 +16,26 @@ public class LogCleaner {
 
     private String[] args;
     private LogCleanerConfig logCleanerConfig;
-    LogCompressionService logCompressionService = new LogCompressionService();
-    CleanerService cleanerService = new CleanerService();
+    private LogCompressionService logCompressionService = new LogCompressionService();
+    private CleanerService cleanerService = new CleanerService();
 
 
-    private LogCleaner(String[] args) {
+    public LogCleaner(String[] args) {
         this.args = args;
         this.logCleanerConfig = new LogCleanerConfig();
         this.logCleanerConfig.setCleanerMode(CleanerMode.REPLACE);
     }
 
 
-    private void Run() {
+    public void Run() {
         for (String arg : args) {
             System.out.println(arg);
         }
 
 
-        logCompressionService.ExtractAllFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getLogOutputDirectory());
-        cleanerService.cleanLogFile(new File(logCleanerConfig.getLogOutputDirectory()+"\\2017-05-26.tsv.txt"),new File(""));
+        logCompressionService.ExtractAllFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getWorkingDirectory()+"\\Raw");
+        cleanerService.cleanAllLogFiles(new File(logCleanerConfig.getWorkingDirectory()+"\\Raw"), new File(logCleanerConfig.getWorkingDirectory()+"\\Cleaned"));
+        logCompressionService.CompressAllFiles(logCleanerConfig.getWorkingDirectory()+"\\Cleaned", logCleanerConfig.getLogOutputDirectory());
 
     }
 }
