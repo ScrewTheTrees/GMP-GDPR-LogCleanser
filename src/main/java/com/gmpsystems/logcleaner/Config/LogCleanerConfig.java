@@ -10,7 +10,6 @@ public class LogCleanerConfig {
 
     private static String defaultConfigFile = "config.properties";
 
-    private CleanerMode cleanerMode = CleanerMode.NONE;
     private String baseDirectory = "";
     private String workingDirectory = "";
     private String logDirectory = "";
@@ -56,14 +55,6 @@ public class LogCleanerConfig {
         if (logOutputDirectory.startsWith("\\")) logOutputDirectory = baseDirectory + logOutputDirectory;
         if (AWSDirectory.startsWith("\\")) AWSDirectory = baseDirectory + AWSDirectory;
         if (AWSOutputDirectory.startsWith("\\")) AWSOutputDirectory = baseDirectory + AWSOutputDirectory;
-    }
-
-    public CleanerMode getCleanerMode() {
-        return cleanerMode;
-    }
-
-    public void setCleanerMode(CleanerMode cleanerMode) {
-        this.cleanerMode = cleanerMode;
     }
 
     public String getLogDirectory() {

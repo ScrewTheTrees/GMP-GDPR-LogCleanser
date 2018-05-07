@@ -1,29 +1,32 @@
 package com.gmpsystems.logcleaner.Services;
 
+import com.gmpsystems.logcleaner.Config.CleanerCleanseInformation;
 import org.apache.commons.validator.routines.EmailValidator;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class CleanerService {
 
     //@Inject
     private DirectoryService directoryService = new DirectoryService();
 
-    public boolean cleanAllLogFiles(String fromDirectory, String toDirectory) {
-        return cleanAllLogFiles(new File(fromDirectory), new File(toDirectory));
+    public boolean cleanAllLogFiles(String fromDirectory, String toDirectory, CleanerCleanseInformation cleanerCleanseInformation) {
+        return cleanAllLogFiles(new File(fromDirectory), new File(toDirectory), cleanerCleanseInformation);
     }
 
-    public boolean cleanAllLogFiles(File fromDirectory, File toDirectory) {
+    public boolean cleanAllLogFiles(File fromDirectory, File toDirectory, CleanerCleanseInformation cleanerCleanseInformation) {
         List<File> logFiles = directoryService.getAllFilesInDirectoryAndSubdirectories(fromDirectory.getAbsolutePath());
         boolean allFilesExported = true;
 
         for (File f : logFiles) {
 
-            boolean success = cleanLogFile(f, new File(f.getAbsolutePath().replace(fromDirectory.getPath(), toDirectory.getPath())));
+            boolean success = cleanLogFile(f, new File(f.getAbsolutePath().replace(fromDirectory.getPath(), toDirectory.getPath())), cleanerCleanseInformation);
             if (!success) {
                 allFilesExported = false;
             }
@@ -32,7 +35,7 @@ public class CleanerService {
         return allFilesExported;
     }
 
-    public boolean cleanLogFile(File fileToClean, File fileToSave) {
+    public boolean cleanLogFile(File fileToClean, File fileToSave, CleanerCleanseInformation cleanerCleanseInformation) {
         boolean success = true;
         //TODO: Actually clean the log file
 
@@ -47,14 +50,13 @@ public class CleanerService {
                 lineNum += 1;
                 List<String> emails = getEmailsFromString(line);
                 if (emails.size() > 0) {
-                    System.out.println("At line \"" + lineNum + "\", " + emails.size() + " email/s has been found: " + emails.get(0));
+                    line = handleEmailString(lineNum, line, emails, cleanerCleanseInformation);
                 }
 
                 emails.clear();
 
 
-                bw.write(line);
-                bw.write("\n");
+                bw.write(line + "\n");
             }
             br.close();
             bw.close();
@@ -63,6 +65,33 @@ public class CleanerService {
             success = false;
         }
         return success;
+    }
+
+    private String handleEmailString(int lineNum, String line, List<String> emails, CleanerCleanseInformation cleanerCleanseInformation) throws NotImplementedException {
+
+        switch (cleanerCleanseInformation.getCleanerMode()) {
+            case NONE:
+                throw new NotImplementedException();
+            case REMOVE:
+                line = handleRemoveCase(line, emails);
+                break;
+            case ADD:
+                throw new NotImplementedException();
+            case REPLACE:
+                throw new NotImplementedException();
+            case MOCK_LOG:
+                System.out.println("At line \"" + lineNum + "\", " + emails.size() + " email/s has been found: " + emails.stream().collect(Collectors.joining()));
+                break;
+        }
+
+        return line;
+    }
+
+    private String handleRemoveCase(String line, List<String> emails) {
+        for (String s : emails) {
+            line = line.replaceAll(s, "");
+        }
+        return line;
     }
 
 

@@ -1,5 +1,6 @@
 package com.gmpsystems.logcleaner;
 
+import com.gmpsystems.logcleaner.Config.CleanerCleanseInformation;
 import com.gmpsystems.logcleaner.Config.CleanerMode;
 import com.gmpsystems.logcleaner.Config.LogCleanerConfig;
 import com.gmpsystems.logcleaner.Services.DirectoryService;
@@ -17,6 +18,9 @@ public class LogCleaner {
 
     private String[] args;
     private LogCleanerConfig logCleanerConfig;
+    private CleanerCleanseInformation cleanerCleanseInformation;
+
+
     private LogCompressionService logCompressionService = new LogCompressionService();
     private CleanerService cleanerService = new CleanerService();
     private DirectoryService directoryService = new DirectoryService();
@@ -25,7 +29,8 @@ public class LogCleaner {
     public LogCleaner(String[] args) {
         this.args = args;
         this.logCleanerConfig = new LogCleanerConfig();
-        this.logCleanerConfig.setCleanerMode(CleanerMode.REPLACE);
+        this.cleanerCleanseInformation = new CleanerCleanseInformation();
+        this.cleanerCleanseInformation.setCleanerMode(CleanerMode.REPLACE);
     }
 
 
@@ -34,16 +39,21 @@ public class LogCleaner {
             System.out.println(arg);
         }
 
-
+        System.out.println("Launching investigation on orbital body.");
         logCompressionService.ExtractAllFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getWorkingDirectory()+"\\Raw");
-        cleanerService.cleanAllLogFiles(new File(logCleanerConfig.getWorkingDirectory()+"\\Raw"), new File(logCleanerConfig.getWorkingDirectory()+"\\Cleaned"));
+        System.out.println("Heretics identified. Purging heretics.");
+        cleanerService.cleanAllLogFiles(new File(logCleanerConfig.getWorkingDirectory()+"\\Raw"), new File(logCleanerConfig.getWorkingDirectory()+"\\Cleaned"), cleanerCleanseInformation);
+        System.out.println("Everyone is a heretic! Regrouping with main fleet.");
         logCompressionService.CompressAllFiles(logCleanerConfig.getWorkingDirectory()+"\\Cleaned", logCleanerConfig.getLogOutputDirectory());
 
         try {
+            System.out.println("Committing orbital bombardment.");
             directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory());
+            System.out.println("Orbital body obliterated.");
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        System.out.println("Awaiting further orders.");
     }
 }
