@@ -1,6 +1,11 @@
 package com.gmpsystems.logcleaner.Services;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystemException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,5 +47,17 @@ public class DirectoryService {
             }
         }
         return directories;
+    }
+
+
+    public void deleteDirectoryRecursively(String directoryToDelete) throws IOException {
+        deleteDirectoryRecursively(new File(directoryToDelete));
+    }
+
+    public void deleteDirectoryRecursively(File directoryToDelete) throws IOException {
+         Files.walk(Paths.get(directoryToDelete.getAbsolutePath()))
+                .map(Path::toFile)
+                .sorted((o1, o2) -> -o1.compareTo(o2))
+                .forEach(File::delete);
     }
 }

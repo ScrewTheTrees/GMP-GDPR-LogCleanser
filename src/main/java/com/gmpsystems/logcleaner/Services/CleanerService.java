@@ -33,6 +33,7 @@ public class CleanerService {
     }
 
     public boolean cleanLogFile(File fileToClean, File fileToSave) {
+        boolean success = true;
         //TODO: Actually clean the log file
 
         new File(fileToSave.getParent()).mkdirs();
@@ -55,12 +56,13 @@ public class CleanerService {
                 bw.write(line);
                 bw.write("\n");
             }
+            br.close();
             bw.close();
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            success = false;
         }
-        return true;
+        return success;
     }
 
 

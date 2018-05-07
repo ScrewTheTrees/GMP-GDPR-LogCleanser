@@ -7,6 +7,7 @@ import com.gmpsystems.logcleaner.Services.LogCompressionService;
 import com.gmpsystems.logcleaner.Services.CleanerService;
 
 import java.io.File;
+import java.io.IOException;
 
 public class LogCleaner {
     public static void main(String[] args) {
@@ -18,6 +19,7 @@ public class LogCleaner {
     private LogCleanerConfig logCleanerConfig;
     private LogCompressionService logCompressionService = new LogCompressionService();
     private CleanerService cleanerService = new CleanerService();
+    private DirectoryService directoryService = new DirectoryService();
 
 
     public LogCleaner(String[] args) {
@@ -36,6 +38,12 @@ public class LogCleaner {
         logCompressionService.ExtractAllFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getWorkingDirectory()+"\\Raw");
         cleanerService.cleanAllLogFiles(new File(logCleanerConfig.getWorkingDirectory()+"\\Raw"), new File(logCleanerConfig.getWorkingDirectory()+"\\Cleaned"));
         logCompressionService.CompressAllFiles(logCleanerConfig.getWorkingDirectory()+"\\Cleaned", logCleanerConfig.getLogOutputDirectory());
+
+        try {
+            directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
