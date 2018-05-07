@@ -1,4 +1,4 @@
-package dto.gmp.logcleaner.Config;
+package com.gmpsystems.logcleaner.Config;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,14 +36,14 @@ public class LogCleanerConfig {
     }
 
     private void matchPropertiesToThis(Properties properties) {
-        baseDirectory = properties.getProperty("base-directory", "");
-        workingDirectory = properties.getProperty("working-directory", "");
-        logDirectory = properties.getProperty("log-directory", "");
-        logOutputDirectory = properties.getProperty("log-output-directory", "");
-        AWSServer = properties.getProperty("aws-server", "");
-        AWSPassword = properties.getProperty("aws-password", "");
-        AWSDirectory = properties.getProperty("aws-directory", "");
-        AWSOutputDirectory = properties.getProperty("aws-output-directory", "");
+        baseDirectory = properties.getProperty("base.directory", "");
+        workingDirectory = properties.getProperty("working.directory", "");
+        logDirectory = properties.getProperty("log.directory", "");
+        logOutputDirectory = properties.getProperty("log.output.directory", "");
+        AWSServer = properties.getProperty("aws.server", "");
+        AWSPassword = properties.getProperty("aws.password", "");
+        AWSDirectory = properties.getProperty("aws.directory", "");
+        AWSOutputDirectory = properties.getProperty("aws.output.directory", "");
 
         readjustProperties();
     }

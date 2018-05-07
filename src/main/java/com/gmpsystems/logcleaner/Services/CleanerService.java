@@ -1,4 +1,4 @@
-package dto.gmp.logcleaner.Services;
+package com.gmpsystems.logcleaner.Services;
 
 import org.apache.commons.validator.routines.EmailValidator;
 

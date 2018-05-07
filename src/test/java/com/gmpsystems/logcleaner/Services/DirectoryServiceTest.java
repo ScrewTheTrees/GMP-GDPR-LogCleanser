@@ -1,4 +1,4 @@
-package dto.gmp.logcleaner.Services;
+package com.gmpsystems.logcleaner.Services;
 
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;

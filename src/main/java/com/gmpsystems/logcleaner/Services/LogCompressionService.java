@@ -1,6 +1,6 @@
-package dto.gmp.logcleaner.Services;
+package com.gmpsystems.logcleaner.Services;
 
-import dto.gmp.logcleaner.Services.GZip.GZipService;
+import com.gmpsystems.logcleaner.Services.GZip.GZipService;
 
 import java.io.File;
 import java.util.List;

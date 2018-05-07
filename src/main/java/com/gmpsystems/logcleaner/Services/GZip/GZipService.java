@@ -1,4 +1,4 @@
-package dto.gmp.logcleaner.Services.GZip;
+package com.gmpsystems.logcleaner.Services.GZip;
 
 import java.io.File;
 import java.io.IOException;

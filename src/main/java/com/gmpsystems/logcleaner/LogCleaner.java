@@ -1,9 +1,9 @@
-package dto.gmp.logcleaner;
+package com.gmpsystems.logcleaner;
 
-import dto.gmp.logcleaner.Config.CleanerMode;
-import dto.gmp.logcleaner.Config.LogCleanerConfig;
-import dto.gmp.logcleaner.Services.CleanerService;
-import dto.gmp.logcleaner.Services.LogCompressionService;
+import com.gmpsystems.logcleaner.Config.CleanerMode;
+import com.gmpsystems.logcleaner.Config.LogCleanerConfig;
+import com.gmpsystems.logcleaner.Services.LogCompressionService;
+import com.gmpsystems.logcleaner.Services.CleanerService;
 
 import java.io.File;
 

@@ -1,4 +1,4 @@
-package dto.gmp.logcleaner.Services;
+package com.gmpsystems.logcleaner.Services;
 
 import java.io.File;
 import java.util.ArrayList;

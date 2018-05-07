@@ -1,5 +1,5 @@
 
-package dto.gmp.logcleaner.Services.GZip;
+package com.gmpsystems.logcleaner.Services.GZip;
 
 import java.io.*;
 import java.util.zip.GZIPInputStream;

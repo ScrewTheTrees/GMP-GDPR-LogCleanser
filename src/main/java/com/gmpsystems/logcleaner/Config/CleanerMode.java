@@ -1,4 +1,4 @@
-package dto.gmp.logcleaner.Config;
+package com.gmpsystems.logcleaner.Config;
 
 public enum CleanerMode {
     /** Do nothing, not correctly configured */
