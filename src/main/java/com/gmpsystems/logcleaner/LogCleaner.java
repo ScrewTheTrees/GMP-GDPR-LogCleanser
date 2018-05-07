@@ -30,7 +30,7 @@ public class LogCleaner {
         this.args = args;
         this.logCleanerConfig = new LogCleanerConfig();
         this.cleanerCleanseInformation = new CleanerCleanseInformation();
-        this.cleanerCleanseInformation.setCleanerMode(CleanerMode.REPLACE);
+        this.cleanerCleanseInformation.setCleanerMode(CleanerMode.MOCK_LOG);
     }
 
 

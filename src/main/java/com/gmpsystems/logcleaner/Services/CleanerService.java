@@ -67,7 +67,7 @@ public class CleanerService {
         return success;
     }
 
-    private String handleEmailString(int lineNum, String line, List<String> emails, CleanerCleanseInformation cleanerCleanseInformation) throws NotImplementedException {
+    String handleEmailString(int lineNum, String line, List<String> emails, CleanerCleanseInformation cleanerCleanseInformation) throws NotImplementedException {
 
         switch (cleanerCleanseInformation.getCleanerMode()) {
             case NONE:

@@ -1,8 +1,11 @@
 package com.gmpsystems.logcleaner.Services;
 
+import com.gmpsystems.logcleaner.Config.CleanerCleanseInformation;
+import com.gmpsystems.logcleaner.Config.CleanerMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,6 +57,23 @@ class CleanerServiceTest {
             String s = service.getFileExtension(testString);
         });
     }
+
+    @Test
+    void handleEmailString_Should_Remove_Email_From_String(){
+        ArrayList<String> list = new ArrayList<>();
+        list.add("anothermail@pen.is");
+        list.add("email@asd.se");
+        CleanerCleanseInformation info = new CleanerCleanseInformation();
+        info.setCleanerMode(CleanerMode.REMOVE);
+
+
+        String line = "email@asd.se is totally an email";
+        String line2 = " is totally an email";
+        String check = service.handleEmailString(1, line, list , info);
+
+        assertEquals(check, line2);
+    }
+
 
 
 }
