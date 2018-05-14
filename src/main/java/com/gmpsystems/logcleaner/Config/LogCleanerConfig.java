@@ -18,13 +18,15 @@ public class LogCleanerConfig {
     private String AWSPassword = "";
     private String AWSDirectory = "";
     private String AWSOutputDirectory = "";
-    private String databaseType = "";
     private String databaseHostname = "";
     private String databaseUsername = "";
     private String databasePassword = "";
     private String databasePort = "";
     private String databaseName = "";
     private String databaseCollection = "";
+
+    private CleanerMode cleanerMode = CleanerMode.LOCAL;
+    private DatabaseType databaseType = DatabaseType.NONE;
 
 
     public LogCleanerConfig() {
@@ -53,7 +55,7 @@ public class LogCleanerConfig {
         AWSDirectory = properties.getProperty("aws.directory", "");
         AWSOutputDirectory = properties.getProperty("aws.output.directory", "");
 
-        databaseType = properties.getProperty("database.type", "");
+        parseDatabaseType(properties.getProperty("database.type", ""));
         databaseHostname = properties.getProperty("database.hostname", "localhost");
         databaseUsername = properties.getProperty("database.username", "");
         databasePassword = properties.getProperty("database.password", "");
@@ -62,6 +64,15 @@ public class LogCleanerConfig {
         databaseCollection = properties.getProperty("database.collection", "");
 
         readjustProperties();
+    }
+
+    private void parseDatabaseType(String property) {
+        if (property.toLowerCase().equals("mongodb")) {
+            databaseType = DatabaseType.MONGODB;
+        }
+
+
+        else databaseType = DatabaseType.NONE;
     }
 
     private void readjustProperties() {
@@ -134,11 +145,11 @@ public class LogCleanerConfig {
         return baseDirectory;
     }
 
-    public String getDatabaseType() {
+    public DatabaseType getDatabaseType() {
         return databaseType;
     }
 
-    public void setDatabaseType(String databaseType) {
+    public void setDatabaseType(DatabaseType databaseType) {
         this.databaseType = databaseType;
     }
 
@@ -188,6 +199,14 @@ public class LogCleanerConfig {
 
     public void setDatabaseCollection(String databaseCollection) {
         this.databaseCollection = databaseCollection;
+    }
+
+    public CleanerMode getCleanerMode() {
+        return cleanerMode;
+    }
+
+    public void setCleanerMode(CleanerMode cleanerMode) {
+        this.cleanerMode = cleanerMode;
     }
 }
 

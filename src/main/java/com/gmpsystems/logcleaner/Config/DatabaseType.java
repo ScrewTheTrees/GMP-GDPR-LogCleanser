@@ -1,5 +1,6 @@
 package com.gmpsystems.logcleaner.Config;
 
-public enum DatabaseTypes {
+public enum DatabaseType {
+    NONE,
     MONGODB
 }

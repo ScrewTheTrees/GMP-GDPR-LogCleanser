@@ -1,14 +1,18 @@
 package com.gmpsystems.logcleaner.Repository;
 
 import com.gmpsystems.logcleaner.Config.LogCleanerConfig;
+import com.mongodb.Block;
+import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
-public class MongoConnection {
+import java.util.ArrayList;
+
+public class MongoConnection implements DatabaseRepository {
 
     private static MongoConnection instance;
-    public static void CreateMongoConnection(LogCleanerConfig logCleanerConfig) {
+    public static void CreateConnection(LogCleanerConfig logCleanerConfig) {
         instance = new MongoConnection(logCleanerConfig);
     }
 
@@ -18,12 +22,16 @@ public class MongoConnection {
 
     private MongoConnection(LogCleanerConfig logCleanerConfig) {
         this.logCleanerConfig = logCleanerConfig;
-        MongoClients.create("mongodb://" + logCleanerConfig.getDatabaseHostname() + ":" + logCleanerConfig.getDatabasePort());
+        mongoClient = MongoClients.create("mongodb://" + logCleanerConfig.getDatabaseHostname() + ":" + logCleanerConfig.getDatabasePort());
     }
 
 
-    public MongoCollection<Document> getUsers() {
-        return mongoClient.getDatabase(logCleanerConfig.getDatabaseName()).getCollection(logCleanerConfig.getDatabaseCollection());
+    public ArrayList<Document> getUsers() {
+        ArrayList<Document> documents = new ArrayList<>();
+        MongoCollection<Document> db = mongoClient.getDatabase(logCleanerConfig.getDatabaseName()).getCollection(logCleanerConfig.getDatabaseCollection());
+        db.find().forEach((Block<? super Document>) documents::add);
+
+        return documents;
     }
 
     public static MongoConnection getInstance() {

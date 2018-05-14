@@ -1,9 +1,6 @@
 package com.gmpsystems.logcleaner;
 
-import com.gmpsystems.logcleaner.Config.CleanerCleanseInformation;
-import com.gmpsystems.logcleaner.Config.CleanerFieldMode;
-import com.gmpsystems.logcleaner.Config.CleanerFieldType;
-import com.gmpsystems.logcleaner.Config.LogCleanerConfig;
+import com.gmpsystems.logcleaner.Config.*;
 import com.gmpsystems.logcleaner.Repository.MongoConnection;
 import com.gmpsystems.logcleaner.Services.DirectoryService;
 import com.gmpsystems.logcleaner.Services.LogCompressionService;
@@ -28,14 +25,14 @@ public class LogCleaner {
     private DirectoryService directoryService = new DirectoryService();
 
 
-    public LogCleaner(String[] args) {
+    private LogCleaner(String[] args) {
         this.args = args;
         this.cleanerCleanseInformation.setCleanerFieldMode(CleanerFieldMode.MOCK_LOG);
 
-        this.cleanerCleanseInformation.setDeleteFromField(CleanerFieldType.EMAIL);
+        this.cleanerCleanseInformation.setDeleteFromField("email");
 
-        this.cleanerCleanseInformation.setReplaceFromField(CleanerFieldType.EMAIL);
-        this.cleanerCleanseInformation.setReplaceToField(CleanerFieldType.OBJECTID);
+        this.cleanerCleanseInformation.setReplaceFromField("email");
+        this.cleanerCleanseInformation.setReplaceToField("_id");
     }
 
 
@@ -45,12 +42,15 @@ public class LogCleaner {
         }
         Configure();
 
+        MongoConnection.getInstance().getUsers();
+
+
         System.out.println("Launching investigation on orbital body.");
-        logCompressionService.ExtractAllFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getWorkingDirectory()+"\\Raw");
+        logCompressionService.ExtractAllFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getWorkingDirectory() + "\\Raw");
         System.out.println("Heretics identified. Purging heretics.");
-        cleanerService.cleanAllLogFiles(new File(logCleanerConfig.getWorkingDirectory()+"\\Raw"), new File(logCleanerConfig.getWorkingDirectory()+"\\Cleaned"), cleanerCleanseInformation);
+        cleanerService.cleanAllLogFiles(new File(logCleanerConfig.getWorkingDirectory() + "\\Raw"), new File(logCleanerConfig.getWorkingDirectory() + "\\Cleaned"), cleanerCleanseInformation);
         System.out.println("Everyone is a heretic! Regrouping with main fleet.");
-        logCompressionService.CompressAllFiles(logCleanerConfig.getWorkingDirectory()+"\\Cleaned", logCleanerConfig.getLogOutputDirectory());
+        logCompressionService.CompressAllFiles(logCleanerConfig.getWorkingDirectory() + "\\Cleaned", logCleanerConfig.getLogOutputDirectory());
 
         try {
             System.out.println("Committing orbital bombardment.");
@@ -64,10 +64,22 @@ public class LogCleaner {
     }
 
     private void Configure() {
+        //Firstly, make sure we aren't using another config file.
+        for (int i = 0; i < args.length; i++)
+            if (args[i].equals("-configfile"))
+                logCleanerConfig = new LogCleanerConfig(args[i] + 1);
 
 
+        //Handle configurations
+        for (int i = 0; i < args.length; i++) {
+            switch (args[i]) {
+                case "--useaws":
+                    logCleanerConfig.setCleanerMode(CleanerMode.AMAZONAWS);
+                    break;
+            }
+        }
 
-
-        MongoConnection.CreateMongoConnection(logCleanerConfig);
+        if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB)
+            MongoConnection.CreateConnection(logCleanerConfig);
     }
 }

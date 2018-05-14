@@ -1,5 +1,10 @@
 
--help       	- Get this information
---uselocal		- !Important, Use local files defined
---useaws		- !Important, Use Amazon AWS server
--configfile ""	- Use another configuration file.
+-help       	        - Get this information
+--useaws		        - Use Amazon AWS server instead of local files.
+
+-configfile ""	        - Use another configuration file.
+
+-deletefield ""         - Fieldname from database to delete from.
+-replacefromfield ""    - Fieldname from database to replace from.
+-replacetofield ""      - Fieldname from database to replace to.
+-isemail true/false     - if the field you use is an email, this function will increase performance if there is a lot of emails.
