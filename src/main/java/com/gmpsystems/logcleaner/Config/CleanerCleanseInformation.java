@@ -8,6 +8,7 @@ public class CleanerCleanseInformation {
     private String replaceFromField = "";
     private String replaceToField = "";
 
+    private boolean fieldIsEmail = false;
 
     public CleanerFieldMode getCleanerFieldMode() {
         return cleanerFieldMode;
@@ -41,6 +42,13 @@ public class CleanerCleanseInformation {
         this.replaceToField = replaceToField;
     }
 
+    public boolean fieldIsEmail() {
+        return fieldIsEmail;
+    }
+
+    public void setFieldIsEmail(boolean fieldIsEmail) {
+        this.fieldIsEmail = fieldIsEmail;
+    }
 }
 
 

@@ -12,6 +12,7 @@ import java.io.IOException;
 public class LogCleaner {
     public static void main(String[] args) {
         LogCleaner logCleaner = new LogCleaner(args);
+        logCleaner.Configure();
         logCleaner.Run();
     }
 
@@ -28,21 +29,12 @@ public class LogCleaner {
     private LogCleaner(String[] args) {
         this.args = args;
         this.cleanerCleanseInformation.setCleanerFieldMode(CleanerFieldMode.MOCK_LOG);
-
-        this.cleanerCleanseInformation.setDeleteFromField("email");
-
-        this.cleanerCleanseInformation.setReplaceFromField("email");
-        this.cleanerCleanseInformation.setReplaceToField("_id");
     }
 
 
-    public void Run() {
-        for (String arg : args) {
-            System.out.println(arg);
-        }
-        Configure();
-
-        MongoConnection.getInstance().getUsers();
+    private void Run() {
+        if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB)
+            MongoConnection.getInstance().getUsers();
 
 
         System.out.println("Launching investigation on orbital body.");
@@ -67,19 +59,66 @@ public class LogCleaner {
         //Firstly, make sure we aren't using another config file.
         for (int i = 0; i < args.length; i++)
             if (args[i].equals("-configfile"))
-                logCleanerConfig = new LogCleanerConfig(args[i] + 1);
+                logCleanerConfig = new LogCleanerConfig(args[i + 1]);
 
 
-        //Handle configurations
+        //Handle basic configurations
         for (int i = 0; i < args.length; i++) {
-            switch (args[i]) {
+            switch (args[i].toLowerCase()) {
+                case "-configfile":
+                    i += 1; //Already processed
+                    break;
                 case "--useaws":
                     logCleanerConfig.setCleanerMode(CleanerMode.AMAZONAWS);
                     break;
+                case "-deletefield":
+                    i += 1;
+                    cleanerCleanseInformation.setDeleteFromField(args[i]);
+                    break;
+                case "-replacefromfield":
+                    i += 1;
+                    cleanerCleanseInformation.setReplaceFromField(args[i]);
+                    break;
+                case "-replacetofield":
+                    i += 1;
+                    cleanerCleanseInformation.setReplaceToField(args[i]);
+                    break;
+                case "-isemail":
+                    cleanerCleanseInformation.setFieldIsEmail(true);
+                    break;
+                case "-fieldmode":
+                    i += 1;
+                    ConfigureHandleFieldMode(args[i]);
+                    break;
+                default:
+                    System.out.println("Unknown parameter: " + args[i]);
             }
         }
 
+        //Create connection.
         if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB)
             MongoConnection.CreateConnection(logCleanerConfig);
+    }
+
+
+    private void ConfigureHandleFieldMode(String fieldMode) {
+        switch (fieldMode.toLowerCase()) {
+            case "mocklog":
+            case "mock_log":
+                cleanerCleanseInformation.setCleanerFieldMode(CleanerFieldMode.MOCK_LOG);
+                break;
+            case "add":
+                cleanerCleanseInformation.setCleanerFieldMode(CleanerFieldMode.ADD);
+                break;
+            case "remove":
+                cleanerCleanseInformation.setCleanerFieldMode(CleanerFieldMode.REMOVE);
+                break;
+            case "replace":
+                cleanerCleanseInformation.setCleanerFieldMode(CleanerFieldMode.REPLACE);
+                break;
+            default:
+                System.out.println("Unknown FieldMode: " + fieldMode);
+                cleanerCleanseInformation.setCleanerFieldMode(CleanerFieldMode.NONE);
+        }
     }
 }
