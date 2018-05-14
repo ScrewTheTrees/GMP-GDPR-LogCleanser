@@ -18,6 +18,14 @@ public class LogCleanerConfig {
     private String AWSPassword = "";
     private String AWSDirectory = "";
     private String AWSOutputDirectory = "";
+    private String databaseType = "";
+    private String databaseHostname = "";
+    private String databaseUsername = "";
+    private String databasePassword = "";
+    private String databasePort = "";
+    private String databaseName = "";
+    private String databaseCollection = "";
+
 
     public LogCleanerConfig() {
         this(defaultConfigFile);
@@ -39,10 +47,19 @@ public class LogCleanerConfig {
         workingDirectory = properties.getProperty("working.directory", "");
         logDirectory = properties.getProperty("log.directory", "");
         logOutputDirectory = properties.getProperty("log.output.directory", "");
+
         AWSServer = properties.getProperty("aws.server", "");
         AWSPassword = properties.getProperty("aws.password", "");
         AWSDirectory = properties.getProperty("aws.directory", "");
         AWSOutputDirectory = properties.getProperty("aws.output.directory", "");
+
+        databaseType = properties.getProperty("database.type", "");
+        databaseHostname = properties.getProperty("database.hostname", "localhost");
+        databaseUsername = properties.getProperty("database.username", "");
+        databasePassword = properties.getProperty("database.password", "");
+        databasePort = properties.getProperty("database.port", "27017");
+        databaseName = properties.getProperty("database.name", "");
+        databaseCollection = properties.getProperty("database.collection", "");
 
         readjustProperties();
     }
@@ -115,6 +132,62 @@ public class LogCleanerConfig {
 
     public String getBaseDirectory() {
         return baseDirectory;
+    }
+
+    public String getDatabaseType() {
+        return databaseType;
+    }
+
+    public void setDatabaseType(String databaseType) {
+        this.databaseType = databaseType;
+    }
+
+    public String getDatabaseHostname() {
+        return databaseHostname;
+    }
+
+    public void setDatabaseHostname(String databaseHostname) {
+        this.databaseHostname = databaseHostname;
+    }
+
+    public String getDatabaseUsername() {
+        return databaseUsername;
+    }
+
+    public void setDatabaseUsername(String databaseUsername) {
+        this.databaseUsername = databaseUsername;
+    }
+
+    public String getDatabasePassword() {
+        return databasePassword;
+    }
+
+    public void setDatabasePassword(String databasePassword) {
+        this.databasePassword = databasePassword;
+    }
+
+    public String getDatabasePort() {
+        return databasePort;
+    }
+
+    public void setDatabasePort(String databasePort) {
+        this.databasePort = databasePort;
+    }
+
+    public String getDatabaseName() {
+        return databaseName;
+    }
+
+    public void setDatabaseName(String databaseName) {
+        this.databaseName = databaseName;
+    }
+
+    public String getDatabaseCollection() {
+        return databaseCollection;
+    }
+
+    public void setDatabaseCollection(String databaseCollection) {
+        this.databaseCollection = databaseCollection;
     }
 }
 

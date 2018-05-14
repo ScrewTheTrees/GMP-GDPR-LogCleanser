@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DirectoryService {
 
-    
+
     public List<File> getAllFilesInDirectoryAndSubdirectories(String directoryName) {
         File directory = new File(directoryName);
         ArrayList<File> files = new ArrayList<>();
@@ -55,9 +55,11 @@ public class DirectoryService {
     }
 
     public void deleteDirectoryRecursively(File directoryToDelete) throws IOException {
-         Files.walk(Paths.get(directoryToDelete.getAbsolutePath()))
-                .map(Path::toFile)
-                .sorted((o1, o2) -> -o1.compareTo(o2))
-                .forEach(File::delete);
+        System.out.println("Deleting path: " + directoryToDelete.getAbsolutePath());
+        if (!directoryToDelete.getPath().equals(""))
+            Files.walk(Paths.get(directoryToDelete.getAbsolutePath()))
+                    .map(Path::toFile)
+                    .sorted((o1, o2) -> -o1.compareTo(o2))
+                    .forEach(File::delete);
     }
 }

@@ -1,7 +1,7 @@
 package com.gmpsystems.logcleaner.Services;
 
 import com.gmpsystems.logcleaner.Config.CleanerCleanseInformation;
-import com.gmpsystems.logcleaner.Config.CleanerMode;
+import com.gmpsystems.logcleaner.Config.CleanerFieldMode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -64,7 +64,7 @@ class CleanerServiceTest {
         list.add("anothermail@pen.is");
         list.add("email@asd.se");
         CleanerCleanseInformation info = new CleanerCleanseInformation();
-        info.setCleanerMode(CleanerMode.REMOVE);
+        info.setCleanerFieldMode(CleanerFieldMode.REMOVE);
 
 
         String line = "email@asd.se is totally an email";

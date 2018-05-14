@@ -1,9 +1,10 @@
 package com.gmpsystems.logcleaner;
 
 import com.gmpsystems.logcleaner.Config.CleanerCleanseInformation;
-import com.gmpsystems.logcleaner.Config.CleanerMode;
+import com.gmpsystems.logcleaner.Config.CleanerFieldMode;
 import com.gmpsystems.logcleaner.Config.CleanerFieldType;
 import com.gmpsystems.logcleaner.Config.LogCleanerConfig;
+import com.gmpsystems.logcleaner.Repository.MongoConnection;
 import com.gmpsystems.logcleaner.Services.DirectoryService;
 import com.gmpsystems.logcleaner.Services.LogCompressionService;
 import com.gmpsystems.logcleaner.Services.CleanerService;
@@ -29,7 +30,7 @@ public class LogCleaner {
 
     public LogCleaner(String[] args) {
         this.args = args;
-        this.cleanerCleanseInformation.setCleanerMode(CleanerMode.MOCK_LOG);
+        this.cleanerCleanseInformation.setCleanerFieldMode(CleanerFieldMode.MOCK_LOG);
 
         this.cleanerCleanseInformation.setDeleteFromField(CleanerFieldType.EMAIL);
 
@@ -42,6 +43,7 @@ public class LogCleaner {
         for (String arg : args) {
             System.out.println(arg);
         }
+        Configure();
 
         System.out.println("Launching investigation on orbital body.");
         logCompressionService.ExtractAllFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getWorkingDirectory()+"\\Raw");
@@ -59,5 +61,13 @@ public class LogCleaner {
         }
 
         System.out.println("Awaiting further orders.");
+    }
+
+    private void Configure() {
+
+
+
+
+        MongoConnection.CreateMongoConnection(logCleanerConfig);
     }
 }

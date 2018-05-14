@@ -1,11 +1,9 @@
 package com.gmpsystems.logcleaner.Config;
 
-import java.util.ArrayList;
-
 public class CleanerCleanseInformation {
 
-    private CleanerMode cleanerMode = CleanerMode.NONE;
-    private ArrayList<CleanerUserInformation> users = new ArrayList<>();
+    private CleanerFieldMode cleanerFieldMode = CleanerFieldMode.NONE;
+    //private ArrayList<CleanerUserInformation> users = new ArrayList<>();
 
     private CleanerFieldType deleteFromField = CleanerFieldType.NONE;
     private CleanerFieldType replaceFromField = CleanerFieldType.NONE;
@@ -13,17 +11,17 @@ public class CleanerCleanseInformation {
 
 
 
-    public CleanerMode getCleanerMode() {
-        return cleanerMode;
+    public CleanerFieldMode getCleanerFieldMode() {
+        return cleanerFieldMode;
     }
 
-    public void setCleanerMode(CleanerMode cleanerMode) {
-        this.cleanerMode = cleanerMode;
+    public void setCleanerFieldMode(CleanerFieldMode cleanerFieldMode) {
+        this.cleanerFieldMode = cleanerFieldMode;
     }
 
-    public ArrayList<CleanerUserInformation> getUsers() {
+    /*public ArrayList<CleanerUserInformation> getUsers() {
         return users;
-    }
+    }*/
 
     public CleanerFieldType getReplaceToField() {
         return replaceToField;
