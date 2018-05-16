@@ -80,7 +80,7 @@ public class CleanerService {
             case NONE:
                 break; //Do nothing, as intended
             case REMOVE:
-                line = handleRemoveCase(line, cleanerCleanseInformation);
+                line = handleRemoveCase(line, cleanerCleanseInformation, strings, lineNum);
                 break;
             case ADD:
                 throw new NotImplementedException();
@@ -95,9 +95,17 @@ public class CleanerService {
         return line;
     }
 
-    private String handleRemoveCase(String line, CleanerCleanseInformation cleanerCleanseInformation) {
+    private String handleRemoveCase(String line, CleanerCleanseInformation cleanerCleanseInformation, List<String> strings, int lineNum) {
         for (CleanerDatabaseUnit user : cleanerCleanseInformation.getUsers()) {
             line = line.replaceAll(user.ReplaceFrom, "");
+        }
+        if (cleanerCleanseInformation.isEmailReplaceUndefinedEmails() && cleanerCleanseInformation.getFieldType() == CleanerFieldType.EMAIL) {
+            for (String s : strings) {
+                if (line.contains(s)) {
+                    line = line.replaceAll(s, cleanerCleanseInformation.getEmailReplaceUndefinedString());
+                    System.out.println("At line \"" + lineNum + "\", the email \"" + s + "\" was removed as it could not be found in the database.");
+                }
+            }
         }
         return line;
     }
@@ -110,7 +118,7 @@ public class CleanerService {
             if (line.contains(s)) {
                 if (cleanerCleanseInformation.isEmailReplaceUndefinedEmails() && cleanerCleanseInformation.getFieldType() == CleanerFieldType.EMAIL) {
                     line = line.replaceAll(s, cleanerCleanseInformation.getEmailReplaceUndefinedString());
-                    System.out.println("At line \"" + lineNum + "\", the string \"" + s + "\" was replaced with default as it could not be found in the database.");
+                    System.out.println("At line \"" + lineNum + "\", the email \"" + s + "\" was replaced with default as it could not be found in the database.");
                 } else {
                     System.out.println("At line \"" + lineNum + "\", the string \"" + s + "\" was not replaced, could not be found in the database.");
                 }
