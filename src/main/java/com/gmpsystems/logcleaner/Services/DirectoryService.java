@@ -32,13 +32,12 @@ public class DirectoryService {
         ArrayList<File> directories = new ArrayList<>();
         directories.add(new File(directoryName));
 
+
         // get all the files from a directory
         File[] fList = directory.listFiles();
         if (fList != null) {
             for (File file : fList) {
-                if (file.isFile()) {
-                    //Ignore
-                } else if (file.isDirectory()) {
+                if (file.isDirectory()) {
                     directories.addAll(getAllDirectoriesInDirectoryAndSubdirectories(file.getAbsolutePath()));
                 }
             }
@@ -47,23 +46,28 @@ public class DirectoryService {
     }
 
 
-    public void deleteDirectoryRecursively(String directoryToDelete) throws IOException {
+    public void deleteDirectoryRecursively(String directoryToDelete) {
         deleteDirectoryRecursively(new File(directoryToDelete));
     }
 
-    public void deleteDirectoryRecursively(File directoryToDelete) throws IOException {
+    public void deleteDirectoryRecursively(File directoryToDelete) {
         System.out.println("Deleting path: " + directoryToDelete.getAbsolutePath());
         if (directoryToDelete.exists()) {
-            if (!directoryToDelete.getPath().equals(""))
-                Files.walk(Paths.get(directoryToDelete.getAbsolutePath()))
-                        .map(Path::toFile)
-                        .sorted((o1, o2) -> -o1.compareTo(o2))
-                        .forEach(File::delete);
+            if (!directoryToDelete.getPath().equals("")) {
+                try {
+                    Files.walk(Paths.get(directoryToDelete.getAbsolutePath()))
+                            .map(Path::toFile)
+                            .sorted((o1, o2) -> -o1.compareTo(o2))
+                            .forEach(File::delete);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
 
-    public void copyFile(File fromFile, File toFile) {
+    void copyFile(File fromFile, File toFile) {
         toFile.getParentFile().mkdirs();
         try (InputStream is = new FileInputStream(fromFile); OutputStream os = new FileOutputStream(toFile)) {
             byte[] buffer = new byte[1024];
@@ -73,6 +77,26 @@ public class DirectoryService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void copyAllFiles(String fromDirectory, String toDirectory) {
+        copyAllFiles(new File(fromDirectory), new File(toDirectory));
+    }
+
+    public void copyAllFiles(File fromDirectory, File toDirectory) {
+        List<File> files = getAllFilesInDirectoryAndSubdirectories(fromDirectory.getAbsolutePath());
+        List<File> directories = getAllDirectoriesInDirectoryAndSubdirectories(fromDirectory.getAbsolutePath());
+
+        for (File directory : directories) {
+            File newDir = new File(directory.getAbsolutePath().replace(fromDirectory.getAbsolutePath(), toDirectory.getAbsolutePath()));
+            newDir.mkdirs();
+        }
+
+        for (File file : files) {
+            String fileNewName = file.getPath().replace(fromDirectory.getAbsolutePath(), toDirectory.getAbsolutePath());
+
+            copyFile(file, new File(fileNewName));
         }
     }
 }

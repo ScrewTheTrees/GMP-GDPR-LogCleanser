@@ -2,6 +2,7 @@ Help file
 
 
 -useaws		        - Use Amazon AWS server instead of only local files.
+-gzipoutput         - GZip the output logs after processing, otherwise they are just copied normally.
 
 -configfile ""	        - Use another configuration file.
 
@@ -12,6 +13,7 @@ Help file
 
 #By default this replacer just replace entries "raw", which means replacing the word "axe" with sword would replace "pickaxe" with "picksword"
 #The below 2 arguments can alter this behavior.
+#Only use one..
 -isemail                - if the field you use is an email, this function will increase performance if there is a lot of accounts.
 -isword                 - if the field you use is a single word, words only include "a-z A-Z 0-9" and no spaces.
 

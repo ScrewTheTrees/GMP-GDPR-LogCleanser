@@ -2,6 +2,8 @@ package com.gmpsystems.logcleaner.Services;
 
 import com.gmpsystems.logcleaner.Config.CleanerCleanseInformation;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.bson.Document;
+import sun.misc.Cleaner;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.*;
@@ -70,7 +72,7 @@ public class CleanerService {
             case NONE:
                 throw new NotImplementedException();
             case REMOVE:
-                line = handleRemoveCase(line, emails);
+                line = handleRemoveCase(line, emails, cleanerCleanseInformation);
                 break;
             case ADD:
                 throw new NotImplementedException();
@@ -84,9 +86,9 @@ public class CleanerService {
         return line;
     }
 
-    private String handleRemoveCase(String line, List<String> emails) {
-        for (String email : emails) {
-            line = line.replaceAll(email, "");
+    private String handleRemoveCase(String line, List<String> emails, CleanerCleanseInformation cleanerCleanseInformation) {
+        for (Document user : cleanerCleanseInformation.getUsers()) {
+            line = line.replaceAll(user.get(cleanerCleanseInformation.getDeleteFromField(),""), "");
         }
         return line;
     }

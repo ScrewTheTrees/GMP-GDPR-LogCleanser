@@ -12,7 +12,7 @@ public class LogCompressionService {
     //@Inject
     private GZipService gZipService = new GZipService();
 
-    public void ExtractAllFiles(String fromDirectory, String toDirectory) {
+    public void ExtractAllLogFiles(String fromDirectory, String toDirectory) {
         List<File> files = directoryService.getAllFilesInDirectoryAndSubdirectories(fromDirectory);
         List<File> directories = directoryService.getAllDirectoriesInDirectoryAndSubdirectories(fromDirectory);
 
@@ -42,7 +42,7 @@ public class LogCompressionService {
         }
     }
 
-    public void CompressAllFiles(String fromDirectory, String toDirectory) {
+    public void CompressAllLogFiles(String fromDirectory, String toDirectory) {
         List<File> files = directoryService.getAllFilesInDirectoryAndSubdirectories(fromDirectory);
         List<File> directories = directoryService.getAllDirectoriesInDirectoryAndSubdirectories(fromDirectory);
 

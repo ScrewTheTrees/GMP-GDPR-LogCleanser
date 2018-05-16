@@ -1,5 +1,9 @@
 package com.gmpsystems.logcleaner.Config;
 
+import org.bson.Document;
+
+import java.util.ArrayList;
+
 public class CleanerCleanseInformation {
 
     private CleanerFieldMode cleanerFieldMode = CleanerFieldMode.NONE;
@@ -8,7 +12,11 @@ public class CleanerCleanseInformation {
     private String replaceFromField = "";
     private String replaceToField = "";
 
-    private boolean fieldIsEmail = false;
+    private CleanerFieldType fieldType = CleanerFieldType.NONE;
+
+    private boolean outputToGzip = false;
+
+    private ArrayList<Document> users;
 
     public CleanerFieldMode getCleanerFieldMode() {
         return cleanerFieldMode;
@@ -42,12 +50,29 @@ public class CleanerCleanseInformation {
         this.replaceToField = replaceToField;
     }
 
-    public boolean fieldIsEmail() {
-        return fieldIsEmail;
+
+    public boolean isOutputToGzip() {
+        return outputToGzip;
     }
 
-    public void setFieldIsEmail(boolean fieldIsEmail) {
-        this.fieldIsEmail = fieldIsEmail;
+    public void setOutputToGzip(boolean outputToGzip) {
+        this.outputToGzip = outputToGzip;
+    }
+
+    public CleanerFieldType getFieldType() {
+        return fieldType;
+    }
+
+    public void setFieldType(CleanerFieldType fieldType) {
+        this.fieldType = fieldType;
+    }
+
+    public ArrayList<Document> getUsers() {
+        return users;
+    }
+
+    public void setUsers(ArrayList<Document> users) {
+        this.users = users;
     }
 }
 

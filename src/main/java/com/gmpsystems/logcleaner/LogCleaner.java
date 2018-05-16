@@ -7,7 +7,6 @@ import com.gmpsystems.logcleaner.Services.LogCompressionService;
 import com.gmpsystems.logcleaner.Services.CleanerService;
 
 import java.io.File;
-import java.io.IOException;
 
 public class LogCleaner {
     public static void main(String[] args) {
@@ -34,28 +33,23 @@ public class LogCleaner {
 
     private void Run() {
         if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB)
-            MongoConnection.getInstance().getUsers();
+            cleanerCleanseInformation.setUsers(MongoConnection.getInstance().getUsers());
 
         System.out.println("Commencing work.");
-        try {
-            directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Launching investigation on orbital body.");
-        logCompressionService.ExtractAllFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getWorkingDirectory() + "\\Raw");
-        System.out.println("Heretics identified. Purging heretics.");
-        cleanerService.cleanAllLogFiles(new File(logCleanerConfig.getWorkingDirectory() + "\\Raw"), new File(logCleanerConfig.getWorkingDirectory() + "\\Cleaned"), cleanerCleanseInformation);
-        System.out.println("Everyone is a heretic! Regrouping with main fleet.");
-        logCompressionService.CompressAllFiles(logCleanerConfig.getWorkingDirectory() + "\\Cleaned", logCleanerConfig.getLogOutputDirectory());
+        directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory());
 
-        try {
-            System.out.println("Committing orbital bombardment.");
-            directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory());
-            System.out.println("Orbital body obliterated.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println("Launching investigation on orbital body.");
+        ExtractLogs();
+        System.out.println("Heretics identified. Purging heretics.");
+        ClearLogs();
+        System.out.println("Everyone is a heretic! Regrouping with main fleet.");
+        MakeOutput();
+
+
+
+        System.out.println("Committing orbital bombardment.");
+        directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory());
+        System.out.println("Orbital body obliterated.");
 
         System.out.println("Awaiting further orders.");
     }
@@ -76,6 +70,9 @@ public class LogCleaner {
                 case "-useaws":
                     logCleanerConfig.setCleanerMode(CleanerMode.AMAZONAWS);
                     break;
+                case "-gzipoutput":
+                    cleanerCleanseInformation.setOutputToGzip(true);
+                    break;
                 case "-deletefield":
                     i += 1;
                     cleanerCleanseInformation.setDeleteFromField(args[i]);
@@ -89,7 +86,10 @@ public class LogCleaner {
                     cleanerCleanseInformation.setReplaceToField(args[i]);
                     break;
                 case "-isemail":
-                    cleanerCleanseInformation.setFieldIsEmail(true);
+                    cleanerCleanseInformation.setFieldType(CleanerFieldType.EMAIL);
+                    break;
+                case "-isword":
+                    cleanerCleanseInformation.setFieldType(CleanerFieldType.WORD);
                     break;
                 case "-fieldmode":
                     i += 1;
@@ -101,8 +101,9 @@ public class LogCleaner {
         }
 
         //Create connection.
-        if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB)
+        if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB) {
             MongoConnection.CreateConnection(logCleanerConfig);
+        }
     }
 
 
@@ -124,6 +125,23 @@ public class LogCleaner {
             default:
                 System.out.println("Unknown FieldMode: " + fieldMode);
                 cleanerCleanseInformation.setCleanerFieldMode(CleanerFieldMode.NONE);
+        }
+    }
+
+
+    private void ExtractLogs() {
+        logCompressionService.ExtractAllLogFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getWorkingDirectory() + "\\Raw");
+    }
+
+    private void ClearLogs() {
+        cleanerService.cleanAllLogFiles(new File(logCleanerConfig.getWorkingDirectory() + "\\Raw"), new File(logCleanerConfig.getWorkingDirectory() + "\\Cleaned"), cleanerCleanseInformation);
+    }
+
+    private void MakeOutput() {
+        if (cleanerCleanseInformation.isOutputToGzip()) {
+            logCompressionService.CompressAllLogFiles(logCleanerConfig.getWorkingDirectory() + "\\Cleaned", logCleanerConfig.getLogOutputDirectory());
+        } else {
+            directoryService.copyAllFiles(logCleanerConfig.getWorkingDirectory() + "\\Cleaned", logCleanerConfig.getLogOutputDirectory());
         }
     }
 }
