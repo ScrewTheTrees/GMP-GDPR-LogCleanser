@@ -22,11 +22,23 @@ public class LogCompressionService {
             newDir.mkdirs();
         }
 
-        for (File file : files) {
-            int fileOffset = file.getAbsolutePath().replace(fromDirectory, toDirectory).lastIndexOf(".");
-            String fileNewName = file.getPath().replace(fromDirectory, toDirectory).substring(0, fileOffset) + ".txt";
 
-            gZipService.DecompressFile(file, new File(fileNewName));
+        for (File file : files) {
+
+            String fileNewName = file.getPath().replace(fromDirectory, toDirectory);
+            if (fileNewName.endsWith(".gz")) {
+                int fileOffset = fileNewName.lastIndexOf(".");
+                fileNewName = fileNewName.substring(0, fileOffset);
+            }
+
+            if (file.getAbsolutePath().endsWith(".gz") && fileNewName.endsWith(".tsv")) {
+                gZipService.DecompressFile(file, new File(fileNewName));
+            } else if (file.getAbsolutePath().endsWith(".tsv")) {
+                directoryService.copyFile(file, new File(fileNewName));
+            } else {
+                System.out.println("File: " + file.getAbsolutePath() + ";   is not a gz or tsv file.");
+            }
+
         }
     }
 

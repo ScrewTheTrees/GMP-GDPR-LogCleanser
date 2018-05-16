@@ -1,11 +1,8 @@
 package com.gmpsystems.logcleaner.Services;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileSystemException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
+import java.nio.channels.FileChannel;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,10 +53,26 @@ public class DirectoryService {
 
     public void deleteDirectoryRecursively(File directoryToDelete) throws IOException {
         System.out.println("Deleting path: " + directoryToDelete.getAbsolutePath());
-        if (!directoryToDelete.getPath().equals(""))
-            Files.walk(Paths.get(directoryToDelete.getAbsolutePath()))
-                    .map(Path::toFile)
-                    .sorted((o1, o2) -> -o1.compareTo(o2))
-                    .forEach(File::delete);
+        if (directoryToDelete.exists()) {
+            if (!directoryToDelete.getPath().equals(""))
+                Files.walk(Paths.get(directoryToDelete.getAbsolutePath()))
+                        .map(Path::toFile)
+                        .sorted((o1, o2) -> -o1.compareTo(o2))
+                        .forEach(File::delete);
+        }
+    }
+
+
+    public void copyFile(File fromFile, File toFile) {
+        toFile.getParentFile().mkdirs();
+        try (InputStream is = new FileInputStream(fromFile); OutputStream os = new FileOutputStream(toFile)) {
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

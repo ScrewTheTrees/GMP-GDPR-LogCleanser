@@ -1,7 +1,7 @@
 Help file
 
 
---useaws		        - Use Amazon AWS server instead of only local files.
+-useaws		        - Use Amazon AWS server instead of only local files.
 
 -configfile ""	        - Use another configuration file.
 

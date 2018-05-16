@@ -36,7 +36,12 @@ public class LogCleaner {
         if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB)
             MongoConnection.getInstance().getUsers();
 
-
+        System.out.println("Commencing work.");
+        try {
+            directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println("Launching investigation on orbital body.");
         logCompressionService.ExtractAllFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getWorkingDirectory() + "\\Raw");
         System.out.println("Heretics identified. Purging heretics.");
@@ -68,7 +73,7 @@ public class LogCleaner {
                 case "-configfile":
                     i += 1; //Already processed
                     break;
-                case "--useaws":
+                case "-useaws":
                     logCleanerConfig.setCleanerMode(CleanerMode.AMAZONAWS);
                     break;
                 case "-deletefield":
