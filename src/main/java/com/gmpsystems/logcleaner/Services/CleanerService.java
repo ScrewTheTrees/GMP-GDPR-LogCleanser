@@ -3,7 +3,6 @@ package com.gmpsystems.logcleaner.Services;
 import com.gmpsystems.logcleaner.Config.CleanerCleanseInformation;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.bson.Document;
-import sun.misc.Cleaner;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.*;
@@ -72,12 +71,12 @@ public class CleanerService {
             case NONE:
                 throw new NotImplementedException();
             case REMOVE:
-                line = handleRemoveCase(line, emails, cleanerCleanseInformation);
+                line = handleRemoveCase(line, cleanerCleanseInformation);
                 break;
             case ADD:
                 throw new NotImplementedException();
             case REPLACE:
-                throw new NotImplementedException();
+                line = handleReplaceCase(line, cleanerCleanseInformation);
             case MOCK_LOG:
                 System.out.println("At line \"" + lineNum + "\", " + emails.size() + " email/s has been found: " + emails.stream().collect(Collectors.joining()));
                 break;
@@ -86,9 +85,16 @@ public class CleanerService {
         return line;
     }
 
-    private String handleRemoveCase(String line, List<String> emails, CleanerCleanseInformation cleanerCleanseInformation) {
+    private String handleRemoveCase(String line, CleanerCleanseInformation cleanerCleanseInformation) {
         for (Document user : cleanerCleanseInformation.getUsers()) {
             line = line.replaceAll(user.get(cleanerCleanseInformation.getDeleteFromField(),""), "");
+        }
+        return line;
+    }
+
+    private String handleReplaceCase(String line, CleanerCleanseInformation cleanerCleanseInformation) {
+        for (Document user : cleanerCleanseInformation.getUsers()) {
+            line = line.replaceAll(user.get(cleanerCleanseInformation.getReplaceFromField(),""), cleanerCleanseInformation.getReplaceToField());
         }
         return line;
     }

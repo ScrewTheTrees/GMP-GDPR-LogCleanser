@@ -37,6 +37,8 @@ public class LogCleaner {
 
         System.out.println("Commencing work.");
         directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory());
+        directoryService.deleteDirectoryRecursively(logCleanerConfig.getLogOutputDirectory());
+        directoryService.deleteDirectoryRecursively(logCleanerConfig.getAWSOutputDirectory());
 
         System.out.println("Launching investigation on orbital body.");
         ExtractLogs();
@@ -44,9 +46,7 @@ public class LogCleaner {
         ClearLogs();
         System.out.println("Everyone is a heretic! Regrouping with main fleet.");
         MakeOutput();
-
-
-
+        
         System.out.println("Committing orbital bombardment.");
         directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory());
         System.out.println("Orbital body obliterated.");
