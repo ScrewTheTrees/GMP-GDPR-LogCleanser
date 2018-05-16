@@ -1,20 +1,24 @@
 Help file
 
 
---useaws		        - Use Amazon AWS server instead of local files.
+--useaws		        - Use Amazon AWS server instead of only local files.
 
 -configfile ""	        - Use another configuration file.
 
+#These are the fields that should be replaced from and to in the database of choice.
 -deletefield ""         - Fieldname from database to delete from.
 -replacefromfield ""    - Fieldname from database to replace from.
 -replacetofield ""      - Fieldname from database to replace to.
--isemail                - if the field you use is an fieldIsEmail, this function will increase performance if there is a lot of emails.
 
+#By default this replacer just replace entries "raw", which means replacing the word "axe" with sword would replace "pickaxe" with "picksword"
+#The below 2 arguments can alter this behavior.
+-isemail                - if the field you use is an email, this function will increase performance if there is a lot of accounts.
+-isword                 - if the field you use is a single word, words only include "a-z A-Z 0-9" and no spaces.
 
 
 #Sets the FieldMode to use (add, replace, mock, etc...)
-#MOCKLOG
-#ADD
-#REPLACE
-#REMOVE
+#MOCKLOG        - Doesn't actually delete anything, only shows all the found entries.
+#ADD            - Deprecated, doesn't do anything.
+#REPLACE        - Replace entries as "replacefromfield" to "replacetofield" in logs.
+#REMOVE         - Remove all entries in the "deletefield".
 -fieldmode ""

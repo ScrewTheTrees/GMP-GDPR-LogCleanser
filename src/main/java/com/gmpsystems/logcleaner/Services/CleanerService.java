@@ -92,13 +92,22 @@ public class CleanerService {
     }
 
 
-    public List<String> getEmailsFromString(String getEmailString) {
+    List<String> getEmailsFromString(String getEmailString) {
         ArrayList<String> emails = new ArrayList<String>();
         Matcher m = Pattern.compile("[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+").matcher(getEmailString);
         while (m.find()) {
             if (EmailValidator.getInstance().isValid(m.group())) {
                 emails.add(m.group());
             }
+        }
+        return emails;
+    }
+
+    public List<String> getWordsFromString(String getWordString) {
+        ArrayList<String> emails = new ArrayList<String>();
+        Matcher m = Pattern.compile("[a-zA-Z0-9]+").matcher(getWordString);
+        while (m.find()) {
+            emails.add(m.group());
         }
         return emails;
     }

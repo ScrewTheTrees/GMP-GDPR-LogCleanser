@@ -59,7 +59,7 @@ class CleanerServiceTest {
     }
 
     @Test
-    void handleEmailString_Should_Remove_Email_From_String(){
+    void handleEmailString_Should_Remove_Email_From_String() {
         ArrayList<String> list = new ArrayList<>();
         list.add("anothermail@pen.is");
         list.add("email@asd.se");
@@ -69,11 +69,17 @@ class CleanerServiceTest {
 
         String line = "email@asd.se is totally an email";
         String line2 = " is totally an email";
-        String check = service.handleEmailString(1, line, list , info);
+        String check = service.handleEmailString(1, line, list, info);
 
         assertEquals(check, line2);
     }
 
+    @Test
+    void getWordsFromString_Should_All_Be_Detected() {
+        String testString = "736433255083171855\t2016-11-19T00:49:52\t2016-11-19T00:49:52Z\t83271784\tgmp365\t54.158.5.38\tLocal7\tInfo\tapp/web.1\t2016-11-19 00:49:52 INFO  AjaxAuthenticationSuccessHandler:45 - User 'claire.delahunty@dentsuaegis.com' logged in from '204.128.220.10'";
+        List<String> emails = service.getWordsFromString(testString);
+        assertEquals(43, emails.size());
+    }
 
 
 }
