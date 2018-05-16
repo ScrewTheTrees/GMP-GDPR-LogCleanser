@@ -5,8 +5,10 @@ import com.gmpsystems.logcleaner.Repository.MongoConnection;
 import com.gmpsystems.logcleaner.Services.DirectoryService;
 import com.gmpsystems.logcleaner.Services.LogCompressionService;
 import com.gmpsystems.logcleaner.Services.CleanerService;
+import org.bson.Document;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class LogCleaner {
     public static void main(String[] args) {
@@ -32,8 +34,6 @@ public class LogCleaner {
 
 
     private void Run() {
-        if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB)
-            cleanerCleanseInformation.setUsers(MongoConnection.getInstance().getUsers());
 
         System.out.println("Commencing work.");
         directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory());
@@ -46,7 +46,7 @@ public class LogCleaner {
         ClearLogs();
         System.out.println("Everyone is a heretic! Regrouping with main fleet.");
         MakeOutput();
-        
+
         System.out.println("Committing orbital bombardment.");
         directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory());
         System.out.println("Orbital body obliterated.");
@@ -73,10 +73,6 @@ public class LogCleaner {
                 case "-gzipoutput":
                     cleanerCleanseInformation.setOutputToGzip(true);
                     break;
-                case "-deletefield":
-                    i += 1;
-                    cleanerCleanseInformation.setDeleteFromField(args[i]);
-                    break;
                 case "-replacefromfield":
                     i += 1;
                     cleanerCleanseInformation.setReplaceFromField(args[i]);
@@ -95,6 +91,11 @@ public class LogCleaner {
                     i += 1;
                     ConfigureHandleFieldMode(args[i]);
                     break;
+                case "-email-replace-undefined-emails":
+                    i += 1;
+                    cleanerCleanseInformation.setEmailReplaceUndefinedEmails(true);
+                    cleanerCleanseInformation.setEmailReplaceUndefinedString(args[i]);
+                    break;
                 default:
                     System.out.println("Unknown parameter: " + args[i]);
             }
@@ -104,6 +105,8 @@ public class LogCleaner {
         if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB) {
             MongoConnection.CreateConnection(logCleanerConfig);
         }
+
+        PopulateDatabaseUsers();
     }
 
 
@@ -142,6 +145,16 @@ public class LogCleaner {
             logCompressionService.CompressAllLogFiles(logCleanerConfig.getWorkingDirectory() + "\\Cleaned", logCleanerConfig.getLogOutputDirectory());
         } else {
             directoryService.copyAllFiles(logCleanerConfig.getWorkingDirectory() + "\\Cleaned", logCleanerConfig.getLogOutputDirectory());
+        }
+    }
+
+
+    private void PopulateDatabaseUsers() {
+        if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB) {
+            ArrayList<Document> documents = MongoConnection.getInstance().getUsers();
+            for (Document d : documents) {
+                cleanerCleanseInformation.getUsers().add(new CleanerDatabaseUnit(d.get(cleanerCleanseInformation.getReplaceFromField()).toString(), d.get(cleanerCleanseInformation.getReplaceToField()).toString()));
+            }
         }
     }
 }

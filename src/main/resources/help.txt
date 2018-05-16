@@ -7,13 +7,11 @@ Help file
 -configfile ""	        - Use another configuration file.
 
 #These are the fields that should be replaced from and to in the database of choice.
--deletefield ""         - Fieldname from database to delete from.
--replacefromfield ""    - Fieldname from database to replace from.
+-replacefromfield ""    - Fieldname from database to replace/delete from.
 -replacetofield ""      - Fieldname from database to replace to.
 
-#By default this replacer just replace entries "raw", which means replacing the word "axe" with sword would replace "pickaxe" with "picksword"
-#The below 2 arguments can alter this behavior.
-#Only use one..
+#By default this replacer just replace entries "raw", which means replacing the word "axe" with sword would replace "pickaxe" with "picksword".
+#The below 2 arguments can alter this behavior.  Only use one...
 -isemail                - if the field you use is an email, this function will increase performance if there is a lot of accounts.
 -isword                 - if the field you use is a single word, words only include "a-z A-Z 0-9" and no spaces.
 
@@ -24,3 +22,9 @@ Help file
 #REPLACE        - Replace entries as "replacefromfield" to "replacetofield" in logs.
 #REMOVE         - Remove all entries in the "deletefield".
 -fieldmode ""
+
+
+#this only works for "isemail" mode.
+#it replaces all undefined emails with the defined argument string.
+
+-email-replace-undefined-emails ""

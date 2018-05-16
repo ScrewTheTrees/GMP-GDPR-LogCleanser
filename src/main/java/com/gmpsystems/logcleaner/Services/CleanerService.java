@@ -1,8 +1,9 @@
 package com.gmpsystems.logcleaner.Services;
 
 import com.gmpsystems.logcleaner.Config.CleanerCleanseInformation;
+import com.gmpsystems.logcleaner.Config.CleanerDatabaseUnit;
+import com.gmpsystems.logcleaner.Config.CleanerFieldType;
 import org.apache.commons.validator.routines.EmailValidator;
-import org.bson.Document;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.*;
@@ -48,11 +49,7 @@ public class CleanerService {
 
             while ((line = br.readLine()) != null) {
                 lineNum += 1;
-                List<String> emails = getEmailsFromString(line);
-
-                if (emails.size() > 0) {
-                    line = handleEmailString(lineNum, line, emails, cleanerCleanseInformation);
-                }
+                line = handleLine(cleanerCleanseInformation, line, lineNum);
 
                 bw.write(line + "\n");
             }
@@ -65,20 +62,33 @@ public class CleanerService {
         return success;
     }
 
-    String handleEmailString(int lineNum, String line, List<String> emails, CleanerCleanseInformation cleanerCleanseInformation) throws NotImplementedException {
+    String handleLine(CleanerCleanseInformation cleanerCleanseInformation, String line, int lineNum) {
+        if (cleanerCleanseInformation.getFieldType() == CleanerFieldType.EMAIL) {
+            List<String> emails = getEmailsFromString(line);
+
+            if (emails.size() > 0) {
+                line = handleEmailString(lineNum, line, emails, cleanerCleanseInformation);
+            }
+        }
+        return line;
+    }
+
+
+    String handleEmailString(int lineNum, String line, List<String> strings, CleanerCleanseInformation cleanerCleanseInformation) throws NotImplementedException {
 
         switch (cleanerCleanseInformation.getCleanerFieldMode()) {
             case NONE:
-                throw new NotImplementedException();
+                break; //Do nothing, as intended
             case REMOVE:
                 line = handleRemoveCase(line, cleanerCleanseInformation);
                 break;
             case ADD:
                 throw new NotImplementedException();
             case REPLACE:
-                line = handleReplaceCase(line, cleanerCleanseInformation);
+                line = handleReplaceCase(line, cleanerCleanseInformation, strings, lineNum);
+                break;
             case MOCK_LOG:
-                System.out.println("At line \"" + lineNum + "\", " + emails.size() + " email/s has been found: " + emails.stream().collect(Collectors.joining()));
+                System.out.println("At line \"" + lineNum + "\", " + strings.size() + " email/s has been found: " + strings.stream().collect(Collectors.joining()));
                 break;
         }
 
@@ -86,15 +96,25 @@ public class CleanerService {
     }
 
     private String handleRemoveCase(String line, CleanerCleanseInformation cleanerCleanseInformation) {
-        for (Document user : cleanerCleanseInformation.getUsers()) {
-            line = line.replaceAll(user.get(cleanerCleanseInformation.getDeleteFromField(),""), "");
+        for (CleanerDatabaseUnit user : cleanerCleanseInformation.getUsers()) {
+            line = line.replaceAll(user.ReplaceFrom, "");
         }
         return line;
     }
 
-    private String handleReplaceCase(String line, CleanerCleanseInformation cleanerCleanseInformation) {
-        for (Document user : cleanerCleanseInformation.getUsers()) {
-            line = line.replaceAll(user.get(cleanerCleanseInformation.getReplaceFromField(),""), cleanerCleanseInformation.getReplaceToField());
+    private String handleReplaceCase(String line, CleanerCleanseInformation cleanerCleanseInformation, List<String> strings, int lineNum) {
+        for (CleanerDatabaseUnit user : cleanerCleanseInformation.getUsers()) {
+            line = line.replaceAll(user.ReplaceFrom, user.ReplaceTo);
+        }
+        for (String s : strings) {
+            if (line.contains(s)) {
+                if (cleanerCleanseInformation.isEmailReplaceUndefinedEmails() && cleanerCleanseInformation.getFieldType() == CleanerFieldType.EMAIL) {
+                    line = line.replaceAll(s, cleanerCleanseInformation.getEmailReplaceUndefinedString());
+                    System.out.println("At line \"" + lineNum + "\", the string \"" + s + "\" was replaced with default as it could not be found in the database.");
+                } else {
+                    System.out.println("At line \"" + lineNum + "\", the string \"" + s + "\" was not replaced, could not be found in the database.");
+                }
+            }
         }
         return line;
     }

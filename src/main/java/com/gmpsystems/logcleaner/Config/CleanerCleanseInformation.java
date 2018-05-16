@@ -1,14 +1,11 @@
 package com.gmpsystems.logcleaner.Config;
 
-import org.bson.Document;
-
 import java.util.ArrayList;
 
 public class CleanerCleanseInformation {
 
     private CleanerFieldMode cleanerFieldMode = CleanerFieldMode.NONE;
 
-    private String deleteFromField = "";
     private String replaceFromField = "";
     private String replaceToField = "";
 
@@ -16,7 +13,13 @@ public class CleanerCleanseInformation {
 
     private boolean outputToGzip = false;
 
-    private ArrayList<Document> users;
+    private ArrayList<CleanerDatabaseUnit> users = new ArrayList<>();
+
+    private boolean emailReplaceUndefinedEmails = false;
+    private String emailReplaceUndefinedString = "";
+
+
+
 
     public CleanerFieldMode getCleanerFieldMode() {
         return cleanerFieldMode;
@@ -24,14 +27,6 @@ public class CleanerCleanseInformation {
 
     public void setCleanerFieldMode(CleanerFieldMode cleanerFieldMode) {
         this.cleanerFieldMode = cleanerFieldMode;
-    }
-
-    public String getDeleteFromField() {
-        return deleteFromField;
-    }
-
-    public void setDeleteFromField(String deleteFromField) {
-        this.deleteFromField = deleteFromField;
     }
 
     public String getReplaceFromField() {
@@ -67,12 +62,24 @@ public class CleanerCleanseInformation {
         this.fieldType = fieldType;
     }
 
-    public ArrayList<Document> getUsers() {
+    public ArrayList<CleanerDatabaseUnit> getUsers() {
         return users;
     }
 
-    public void setUsers(ArrayList<Document> users) {
-        this.users = users;
+    public boolean isEmailReplaceUndefinedEmails() {
+        return emailReplaceUndefinedEmails;
+    }
+
+    public void setEmailReplaceUndefinedEmails(boolean emailReplaceUndefinedEmails) {
+        this.emailReplaceUndefinedEmails = emailReplaceUndefinedEmails;
+    }
+
+    public String getEmailReplaceUndefinedString() {
+        return emailReplaceUndefinedString;
+    }
+
+    public void setEmailReplaceUndefinedString(String emailReplaceUndefinedString) {
+        this.emailReplaceUndefinedString = emailReplaceUndefinedString;
     }
 }
 
