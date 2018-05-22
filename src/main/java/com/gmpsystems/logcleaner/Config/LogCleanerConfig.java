@@ -14,8 +14,10 @@ public class LogCleanerConfig {
     private String workingDirectory = "";
     private String logDirectory = "";
     private String logOutputDirectory = "";
-    private String AWSServer = "";
-    private String AWSPassword = "";
+    private String AWSBucketName = "";
+    private String AWSBucketRegion = "";
+    private String AWSAccessKey = "";
+    private String AWSAccessKeySecret = "";
     private String AWSDirectory = "";
     private String AWSOutputDirectory = "";
     private String databaseHostname = "";
@@ -50,8 +52,10 @@ public class LogCleanerConfig {
         logDirectory = properties.getProperty("log.directory", "");
         logOutputDirectory = properties.getProperty("log.output.directory", "");
 
-        AWSServer = properties.getProperty("aws.server", "");
-        AWSPassword = properties.getProperty("aws.password", "");
+        AWSAccessKey = properties.getProperty("aws.accesskey", "");
+        AWSAccessKeySecret = properties.getProperty("aws.accesskey.secret", "");
+        AWSBucketName = properties.getProperty("aws.bucket.name", "");
+        AWSBucketRegion = properties.getProperty("aws.bucket.region", "");
         AWSDirectory = properties.getProperty("aws.directory", "");
         AWSOutputDirectory = properties.getProperty("aws.output.directory", "");
 
@@ -84,14 +88,6 @@ public class LogCleanerConfig {
 
     public String getLogDirectory() {
         return logDirectory;
-    }
-
-    public String getAWSServer() {
-        return AWSServer;
-    }
-
-    public String getAWSPassword() {
-        return AWSPassword;
     }
 
     public String getAWSDirectory() {
@@ -148,6 +144,28 @@ public class LogCleanerConfig {
 
     public void setCleanerMode(CleanerMode cleanerMode) {
         this.cleanerMode = cleanerMode;
+    }
+
+    public String getAWSBucketName() { return AWSBucketName; }
+
+    public String getAWSBucketRegion() {
+        return AWSBucketRegion;
+    }
+
+    public String getAWSAccessKeySecret() {
+        return AWSAccessKeySecret;
+    }
+
+    public void setAWSAccessKeySecret(String AWSAccessKeySecret) {
+        this.AWSAccessKeySecret = AWSAccessKeySecret;
+    }
+
+    public String getAWSAccessKey() {
+        return AWSAccessKey;
+    }
+
+    public void setAWSAccessKey(String AWSAccessKey) {
+        this.AWSAccessKey = AWSAccessKey;
     }
 }
 

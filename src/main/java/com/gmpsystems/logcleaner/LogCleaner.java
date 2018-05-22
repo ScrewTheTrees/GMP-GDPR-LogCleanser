@@ -1,13 +1,18 @@
 package com.gmpsystems.logcleaner;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.gmpsystems.logcleaner.Config.*;
+import com.gmpsystems.logcleaner.Config.Credentials.AWSRawCredentialsProvider;
 import com.gmpsystems.logcleaner.Repository.DatabaseRepository;
 import com.gmpsystems.logcleaner.Repository.MongoConnection;
+import com.gmpsystems.logcleaner.Services.AmazonService;
 import com.gmpsystems.logcleaner.Services.CleanerService;
 import com.gmpsystems.logcleaner.Services.DirectoryService;
 import com.gmpsystems.logcleaner.Services.LogCompressionService;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class LogCleaner {
     public static void main(String[] args) {
@@ -19,10 +24,12 @@ public class LogCleaner {
     private LogCleanerConfig logCleanerConfig = new LogCleanerConfig();
     private CleanerCleanseInformation cleanerCleanseInformation = new CleanerCleanseInformation();
     private DatabaseRepository repository;
+    private AmazonS3 s3Client;
 
     private LogCompressionService logCompressionService = new LogCompressionService();
     private CleanerService cleanerService = new CleanerService();
     private DirectoryService directoryService = new DirectoryService();
+    private AmazonService amazonService = new AmazonService();
 
 
     private LogCleaner(String[] args) {
@@ -95,14 +102,22 @@ public class LogCleaner {
                     cleanerCleanseInformation.setEmailReplaceUndefinedEmails(true);
                     cleanerCleanseInformation.setEmailReplaceUndefinedString(args[i]);
                     break;
+                case "-awsaccesskey":
+                    i += 1;
+                    logCleanerConfig.setAWSAccessKey(args[i]);
+                    break;
+                case "-awsaccesskeysecret":
+                    i += 1;
+                    logCleanerConfig.setAWSAccessKeySecret(args[i]);
+                    break;
                 default:
                     System.out.println("Unknown parameter: " + args[i]);
             }
         }
 
         PopulateDatabaseUsers();
+        ConnectToAmazonBucket();
     }
-
 
     private void ConfigureHandleFieldMode(String fieldMode) {
         switch (fieldMode.toLowerCase()) {
@@ -127,7 +142,12 @@ public class LogCleaner {
 
 
     private void ExtractLogs() {
-        logCompressionService.ExtractAllLogFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getWorkingDirectory() + "\\Raw");
+        if (logCleanerConfig.getCleanerMode() == CleanerMode.AMAZONAWS) {
+            ArrayList<String> amazonFiles = amazonService.GetBucketFiles(s3Client, logCleanerConfig);
+            amazonService.DownloadAllBucketFiles(s3Client, logCleanerConfig, amazonFiles);
+        } else {
+            logCompressionService.ExtractAllLogFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getWorkingDirectory() + "\\Raw");
+        }
     }
 
     private void ClearLogs() {
@@ -140,6 +160,7 @@ public class LogCleaner {
         } else {
             directoryService.copyAllFiles(logCleanerConfig.getWorkingDirectory() + "\\Cleaned", logCleanerConfig.getLogOutputDirectory());
         }
+        //TODO: Upload new files to amazon AWS
     }
 
 
@@ -153,4 +174,16 @@ public class LogCleaner {
 
         cleanerCleanseInformation.getUsers().addAll(repository.getUsers(cleanerCleanseInformation));
     }
+
+    private void ConnectToAmazonBucket() {
+        if (logCleanerConfig.getCleanerMode() == CleanerMode.AMAZONAWS) {
+            s3Client = AmazonS3ClientBuilder.standard()
+                    .withRegion(logCleanerConfig.getAWSBucketRegion())
+                    .enableForceGlobalBucketAccess()
+                    .withCredentials(new AWSRawCredentialsProvider(logCleanerConfig.getAWSAccessKey(), logCleanerConfig.getAWSAccessKeySecret()))
+                    .build();
+        }
+    }
+
+
 }

@@ -1,7 +1,10 @@
 Help file
 
 
--useaws		        - Use Amazon AWS server instead of only local files.
+-useaws		            - Use Amazon AWS server instead of only local files.
+-awsaccesskey  ""       - Set the Accesskey to use with AWS, overrides the one set in the config file.
+-awsaccesskeysecret  "" - Set the AccesskeySecret to use with AWS, overrides the one set in the config file.
+
 -gzipoutput         - GZip the output logs after processing, otherwise they are just copied normally.
 
 -configfile ""	        - Use another configuration file. (Optional)
