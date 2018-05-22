@@ -9,6 +9,8 @@ import com.gmpsystems.logcleaner.Services.LogCompressionService;
 
 import java.io.File;
 
+import static com.gmpsystems.logcleaner.Config.DatabaseType.*;
+
 public class LogCleaner {
     public static void main(String[] args) {
         LogCleaner logCleaner = new LogCleaner(args);
@@ -100,11 +102,6 @@ public class LogCleaner {
             }
         }
 
-        //Create connection.
-        if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB) {
-            repository = new MongoConnection(logCleanerConfig);
-        }
-
         PopulateDatabaseUsers();
     }
 
@@ -149,8 +146,13 @@ public class LogCleaner {
 
 
     private void PopulateDatabaseUsers() {
-        if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB) {
-            cleanerCleanseInformation.getUsers().addAll(repository.getUsers(cleanerCleanseInformation));
+        //Create connection.
+        switch (logCleanerConfig.getDatabaseType()) {
+            case MONGODB:
+                repository = new MongoConnection(logCleanerConfig);
+                break;
         }
+
+        cleanerCleanseInformation.getUsers().addAll(repository.getUsers(cleanerCleanseInformation));
     }
 }
