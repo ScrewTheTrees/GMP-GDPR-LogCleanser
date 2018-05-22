@@ -1,14 +1,13 @@
 package com.gmpsystems.logcleaner;
 
 import com.gmpsystems.logcleaner.Config.*;
+import com.gmpsystems.logcleaner.Repository.DatabaseRepository;
 import com.gmpsystems.logcleaner.Repository.MongoConnection;
+import com.gmpsystems.logcleaner.Services.CleanerService;
 import com.gmpsystems.logcleaner.Services.DirectoryService;
 import com.gmpsystems.logcleaner.Services.LogCompressionService;
-import com.gmpsystems.logcleaner.Services.CleanerService;
-import org.bson.Document;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class LogCleaner {
     public static void main(String[] args) {
@@ -20,7 +19,7 @@ public class LogCleaner {
     private String[] args;
     private LogCleanerConfig logCleanerConfig = new LogCleanerConfig();
     private CleanerCleanseInformation cleanerCleanseInformation = new CleanerCleanseInformation();
-
+    private DatabaseRepository repository;
 
     private LogCompressionService logCompressionService = new LogCompressionService();
     private CleanerService cleanerService = new CleanerService();
@@ -103,7 +102,7 @@ public class LogCleaner {
 
         //Create connection.
         if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB) {
-            MongoConnection.CreateConnection(logCleanerConfig);
+            repository = new MongoConnection(logCleanerConfig);
         }
 
         PopulateDatabaseUsers();
@@ -151,10 +150,7 @@ public class LogCleaner {
 
     private void PopulateDatabaseUsers() {
         if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB) {
-            ArrayList<Document> documents = MongoConnection.getInstance().getUsers();
-            for (Document d : documents) {
-                cleanerCleanseInformation.getUsers().add(new CleanerDatabaseUnit(d.get(cleanerCleanseInformation.getReplaceFromField()).toString(), d.get(cleanerCleanseInformation.getReplaceToField()).toString()));
-            }
+                cleanerCleanseInformation.getUsers().addAll(repository.getUsers(cleanerCleanseInformation));
         }
     }
 }

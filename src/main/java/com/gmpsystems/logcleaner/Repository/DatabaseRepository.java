@@ -1,10 +1,10 @@
 package com.gmpsystems.logcleaner.Repository;
 
-import com.gmpsystems.logcleaner.Config.LogCleanerConfig;
-import org.bson.Document;
+import com.gmpsystems.logcleaner.Config.CleanerCleanseInformation;
+import com.gmpsystems.logcleaner.Config.CleanerDatabaseUnit;
 
 import java.util.ArrayList;
 
 public interface DatabaseRepository {
-    ArrayList<Document> getUsers();
+    ArrayList<CleanerDatabaseUnit> getUsers(CleanerCleanseInformation cleanerCleanseInformation);
 }
