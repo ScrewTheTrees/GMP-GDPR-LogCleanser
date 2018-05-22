@@ -44,7 +44,7 @@ public class LogCleaner {
         System.out.println("Heretics identified. Purging heretics.");
         ClearLogs();
         System.out.println("Everyone is a heretic! Regrouping with main fleet.");
-        MakeOutput();
+        MakeLogOutput();
 
         System.out.println("Committing orbital bombardment.");
         directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory());
@@ -139,7 +139,7 @@ public class LogCleaner {
         cleanerService.cleanAllLogFiles(new File(logCleanerConfig.getWorkingDirectory() + "\\Raw"), new File(logCleanerConfig.getWorkingDirectory() + "\\Cleaned"), cleanerCleanseInformation);
     }
 
-    private void MakeOutput() {
+    private void MakeLogOutput() {
         if (cleanerCleanseInformation.isOutputToGzip()) {
             logCompressionService.CompressAllLogFiles(logCleanerConfig.getWorkingDirectory() + "\\Cleaned", logCleanerConfig.getLogOutputDirectory());
         } else {
@@ -150,7 +150,7 @@ public class LogCleaner {
 
     private void PopulateDatabaseUsers() {
         if (logCleanerConfig.getDatabaseType() == DatabaseType.MONGODB) {
-                cleanerCleanseInformation.getUsers().addAll(repository.getUsers(cleanerCleanseInformation));
+            cleanerCleanseInformation.getUsers().addAll(repository.getUsers(cleanerCleanseInformation));
         }
     }
 }

@@ -69,15 +69,12 @@ public class LogCleanerConfig {
     private void parseDatabaseType(String property) {
         if (property.toLowerCase().equals("mongodb")) {
             databaseType = DatabaseType.MONGODB;
-        }
-
-
-        else databaseType = DatabaseType.NONE;
+        } else databaseType = DatabaseType.NONE;
     }
 
     private void readjustProperties() {
         baseDirectory = new File(baseDirectory).getAbsolutePath();
-        
+
         if (workingDirectory.startsWith("\\")) workingDirectory = baseDirectory + workingDirectory;
         if (logDirectory.startsWith("\\")) logDirectory = baseDirectory + logDirectory;
         if (logOutputDirectory.startsWith("\\")) logOutputDirectory = baseDirectory + logOutputDirectory;
@@ -89,56 +86,28 @@ public class LogCleanerConfig {
         return logDirectory;
     }
 
-    public void setLogDirectory(String logDirectory) {
-        this.logDirectory = logDirectory;
-    }
-
     public String getAWSServer() {
         return AWSServer;
-    }
-
-    public void setAWSServer(String AWSServer) {
-        this.AWSServer = AWSServer;
     }
 
     public String getAWSPassword() {
         return AWSPassword;
     }
 
-    public void setAWSPassword(String AWSPassword) {
-        this.AWSPassword = AWSPassword;
-    }
-
     public String getAWSDirectory() {
         return AWSDirectory;
-    }
-
-    public void setAWSDirectory(String AWSDirectory) {
-        this.AWSDirectory = AWSDirectory;
     }
 
     public String getWorkingDirectory() {
         return workingDirectory;
     }
 
-    public void setWorkingDirectory(String workingDirectory) {
-        this.workingDirectory = workingDirectory;
-    }
-
     public String getLogOutputDirectory() {
         return logOutputDirectory;
     }
 
-    public void setLogOutputDirectory(String logOutputDirectory) {
-        this.logOutputDirectory = logOutputDirectory;
-    }
-
     public String getAWSOutputDirectory() {
         return AWSOutputDirectory;
-    }
-
-    public void setAWSOutputDirectory(String AWSOutputDirectory) {
-        this.AWSOutputDirectory = AWSOutputDirectory;
     }
 
     public String getBaseDirectory() {
@@ -149,56 +118,28 @@ public class LogCleanerConfig {
         return databaseType;
     }
 
-    public void setDatabaseType(DatabaseType databaseType) {
-        this.databaseType = databaseType;
-    }
-
     public String getDatabaseHostname() {
         return databaseHostname;
-    }
-
-    public void setDatabaseHostname(String databaseHostname) {
-        this.databaseHostname = databaseHostname;
     }
 
     public String getDatabaseUsername() {
         return databaseUsername;
     }
 
-    public void setDatabaseUsername(String databaseUsername) {
-        this.databaseUsername = databaseUsername;
-    }
-
     public String getDatabasePassword() {
         return databasePassword;
-    }
-
-    public void setDatabasePassword(String databasePassword) {
-        this.databasePassword = databasePassword;
     }
 
     public String getDatabasePort() {
         return databasePort;
     }
 
-    public void setDatabasePort(String databasePort) {
-        this.databasePort = databasePort;
-    }
-
     public String getDatabaseName() {
         return databaseName;
     }
 
-    public void setDatabaseName(String databaseName) {
-        this.databaseName = databaseName;
-    }
-
     public String getDatabaseCollection() {
         return databaseCollection;
-    }
-
-    public void setDatabaseCollection(String databaseCollection) {
-        this.databaseCollection = databaseCollection;
     }
 
     public CleanerMode getCleanerMode() {
