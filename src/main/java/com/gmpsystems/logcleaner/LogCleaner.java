@@ -12,7 +12,6 @@ import java.io.File;
 public class LogCleaner {
     public static void main(String[] args) {
         LogCleaner logCleaner = new LogCleaner(args);
-        logCleaner.Configure();
         logCleaner.Run();
     }
 
@@ -29,10 +28,11 @@ public class LogCleaner {
     private LogCleaner(String[] args) {
         this.args = args;
         this.cleanerCleanseInformation.setCleanerFieldMode(CleanerFieldMode.MOCK_LOG);
+        Configure();
     }
 
 
-    private void Run() {
+    public void Run() {
 
         System.out.println("Commencing work.");
         directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory());
