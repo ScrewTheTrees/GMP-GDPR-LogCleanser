@@ -4,7 +4,7 @@ Help file
 -useaws		        - Use Amazon AWS server instead of only local files.
 -gzipoutput         - GZip the output logs after processing, otherwise they are just copied normally.
 
--configfile ""	        - Use another configuration file.
+-configfile ""	        - Use another configuration file. (Optional)
 
 #These are the fields that should be replaced from and to in the database of choice.
 -replacefromfield ""    - Fieldname from database to replace/delete from.

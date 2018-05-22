@@ -9,8 +9,6 @@ import com.gmpsystems.logcleaner.Services.LogCompressionService;
 
 import java.io.File;
 
-import static com.gmpsystems.logcleaner.Config.DatabaseType.*;
-
 public class LogCleaner {
     public static void main(String[] args) {
         LogCleaner logCleaner = new LogCleaner(args);
