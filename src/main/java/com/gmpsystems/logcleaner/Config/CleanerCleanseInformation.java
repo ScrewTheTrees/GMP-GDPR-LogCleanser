@@ -19,8 +19,6 @@ public class CleanerCleanseInformation {
     private String emailReplaceUndefinedString = "";
 
 
-
-
     public CleanerFieldMode getCleanerFieldMode() {
         return cleanerFieldMode;
     }

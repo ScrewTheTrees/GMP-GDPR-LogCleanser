@@ -2,6 +2,7 @@ package com.gmpsystems.logcleaner.Services;
 
 import com.gmpsystems.logcleaner.Config.CleanerCleanseInformation;
 import com.gmpsystems.logcleaner.Config.CleanerFieldMode;
+import com.gmpsystems.logcleaner.Config.CleanerFieldType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -59,19 +60,38 @@ class CleanerServiceTest {
     }
 
     @Test
-    void handleEmailString_Should_Remove_Email_From_String() {
+    void handleEmailString_Should_Remove_Email_From_String_If_Undefined() {
         ArrayList<String> list = new ArrayList<>();
         list.add("anothermail@pen.is");
         list.add("email@asd.se");
         CleanerCleanseInformation info = new CleanerCleanseInformation();
         info.setCleanerFieldMode(CleanerFieldMode.REMOVE);
+        info.setFieldType(CleanerFieldType.EMAIL);
+        info.setEmailReplaceUndefinedEmails(true);
 
 
         String line = "email@asd.se is totally an email";
         String line2 = " is totally an email";
-        String check = service.handleEmailString(1, line, list, info);
+        String check = service.handleEmailString(1, line, list, info, "None");
 
         assertEquals(check, line2);
+    }
+
+    @Test
+    void handleEmailString_Should_Not_Remove_Email_From_String_If_Undefined() {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("anothermail@pen.is");
+        list.add("email@asd.se");
+        CleanerCleanseInformation info = new CleanerCleanseInformation();
+        info.setCleanerFieldMode(CleanerFieldMode.REPLACE);
+        info.setFieldType(CleanerFieldType.EMAIL);
+        info.setEmailReplaceUndefinedEmails(false);
+
+
+        String line = "email@asd.se is totally an email";
+        String check = service.handleEmailString(1, line, list, info, "None");
+
+        assertEquals(check, line);
     }
 
     @Test
