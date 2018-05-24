@@ -10,7 +10,7 @@ import org.bson.Document;
 
 import java.util.ArrayList;
 
-public class MongoConnection implements DatabaseRepository {
+public class MongoConnection implements IDatabaseRepository {
     private com.mongodb.client.MongoClient mongoClient;
     private LogCleanerConfig logCleanerConfig;
 

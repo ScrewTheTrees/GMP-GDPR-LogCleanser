@@ -14,10 +14,10 @@ Help file
 -replacetofield ""      - Fieldname from database to replace to.
 
 #By default this replacer just replace entries "raw", which means replacing the word "axe" with sword would replace "pickaxe" with "picksword".
-#The below 2 arguments can alter this behavior.
+#The -isemail can alter this behavior.
 #If none of them are defined nothing will happen.
+-isword                 - if the field you use is a Word, Words can be anything, this is the default mode.
 -isemail                - if the field you use is an email, this function will increase performance if there is a lot of accounts.
--isword                 - if the field you use is a Word, Words can be anything.
 
 
 #Sets the FieldMode to use (add, replace, mock, etc...)

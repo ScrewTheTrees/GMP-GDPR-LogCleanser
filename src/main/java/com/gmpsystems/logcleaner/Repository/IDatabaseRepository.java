@@ -5,6 +5,6 @@ import com.gmpsystems.logcleaner.Config.CleanerDatabaseUnit;
 
 import java.util.ArrayList;
 
-public interface DatabaseRepository {
+public interface IDatabaseRepository {
     ArrayList<CleanerDatabaseUnit> getUsers(CleanerCleanseInformation cleanerCleanseInformation);
 }

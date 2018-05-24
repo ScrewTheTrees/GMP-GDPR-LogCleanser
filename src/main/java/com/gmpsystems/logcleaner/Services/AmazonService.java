@@ -41,7 +41,7 @@ public class AmazonService {
         executor.shutdown();
         while (!executor.isTerminated()) {
         }
-        System.out.println("Finished all threads");
+        System.out.println("Finished downloading all files.");
     }
 
     public void DownloadBucketFile(AmazonS3 amazonS3, LogCleanerConfig logCleanerConfig, String file) {

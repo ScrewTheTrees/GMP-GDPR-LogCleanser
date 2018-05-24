@@ -4,7 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.gmpsystems.logcleaner.Config.*;
 import com.gmpsystems.logcleaner.Config.Credentials.AWSRawCredentialsProvider;
-import com.gmpsystems.logcleaner.Repository.DatabaseRepository;
+import com.gmpsystems.logcleaner.Repository.IDatabaseRepository;
 import com.gmpsystems.logcleaner.Repository.MongoConnection;
 import com.gmpsystems.logcleaner.Services.AmazonService;
 import com.gmpsystems.logcleaner.Services.CleanerService;
@@ -23,7 +23,7 @@ public class LogCleaner {
     private String[] args;
     private LogCleanerConfig logCleanerConfig = new LogCleanerConfig();
     private CleanerCleanseInformation cleanerCleanseInformation = new CleanerCleanseInformation();
-    private DatabaseRepository repository;
+    private IDatabaseRepository repository;
     private AmazonS3 s3Client;
 
     private LogCompressionService logCompressionService = new LogCompressionService();
