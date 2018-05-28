@@ -87,6 +87,6 @@ public class AmazonService {
         File f = new File(file);
         System.out.println("Uploading file to bucket: " + f.getAbsolutePath());
         String out = file.replace(logCleanerConfig.getLogOutputDirectory(), "").replace("\\", "/");
-        amazonS3.putObject(logCleanerConfig.getAWSBucketName(), logCleanerConfig.getAWSDirectory() + "New" + out, f);
+        amazonS3.putObject(logCleanerConfig.getAWSBucketName(), logCleanerConfig.getAWSDirectory() + out, f);
     }
 }

@@ -53,8 +53,7 @@ public class LogCompressionService {
         }
 
         for (File file : files) {
-            int fileOffset = file.getAbsolutePath().replace(fromDirectory, toDirectory).lastIndexOf(".");
-            String fileNewName = file.getPath().replace(fromDirectory, toDirectory).substring(0, fileOffset) + ".gz";
+            String fileNewName = file.getPath().replace(fromDirectory, toDirectory) + ".gz";
 
             gZipService.CompressFile(file, new File(fileNewName));
         }
