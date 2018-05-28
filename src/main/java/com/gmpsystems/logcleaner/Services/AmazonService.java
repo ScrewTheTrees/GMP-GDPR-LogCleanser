@@ -47,7 +47,7 @@ public class AmazonService {
     public void DownloadBucketFile(AmazonS3 amazonS3, LogCleanerConfig logCleanerConfig, String file) {
         try {
             S3Object a = amazonS3.getObject(logCleanerConfig.getAWSBucketName(), file);
-            File newFile = new File(logCleanerConfig.getAWSOutputDirectory() + "\\" + file.replace(logCleanerConfig.getAWSDirectory(), "").replace("/", "\\"));
+            File newFile = new File(logCleanerConfig.getWorkingDirectory() + "\\AWS\\" + file.replace(logCleanerConfig.getAWSDirectory(), "").replace("/", "\\"));
             newFile.getParentFile().mkdirs();
             FileOutputStream fs = new FileOutputStream(newFile);
             System.out.println("Downloading file from bucket: " + newFile.getPath());
@@ -78,8 +78,7 @@ public class AmazonService {
             executor.execute(() -> UploadBucketFile(amazonS3, logCleanerConfig, s));
         }
         executor.shutdown();
-        while (!executor.isTerminated()) {
-        }
+        while (!executor.isTerminated()) { }
         System.out.println("Finished uploading all files.");
     }
 
@@ -87,6 +86,6 @@ public class AmazonService {
         File f = new File(file);
         System.out.println("Uploading file to bucket: " + f.getAbsolutePath());
         String out = file.replace(logCleanerConfig.getLogOutputDirectory(), "").replace("\\", "/");
-        amazonS3.putObject(logCleanerConfig.getAWSBucketName(), logCleanerConfig.getAWSDirectory() + out, f);
+        amazonS3.putObject(logCleanerConfig.getAWSBucketName(), logCleanerConfig.getAWSOutputDirectory() + out, f);
     }
 }

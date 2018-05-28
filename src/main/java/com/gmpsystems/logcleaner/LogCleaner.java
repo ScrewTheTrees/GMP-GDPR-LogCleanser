@@ -45,12 +45,12 @@ public class LogCleaner {
         System.out.println("Commencing work.");
         directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory());
         directoryService.deleteDirectoryRecursively(logCleanerConfig.getLogOutputDirectory());
-        directoryService.deleteDirectoryRecursively(logCleanerConfig.getAWSOutputDirectory());
 
         System.out.println("Launching investigation on orbital body.");
         ExtractLogs();
         System.out.println("Heretics identified. Purging heretics.");
         ClearLogs();
+        directoryService.deleteDirectoryRecursively(logCleanerConfig.getWorkingDirectory() + "\\AWS");
         System.out.println("Everyone is a heretic! Regrouping with main fleet.");
         MakeLogOutput();
 
@@ -146,7 +146,7 @@ public class LogCleaner {
         if (logCleanerConfig.getCleanerMode() == CleanerMode.AMAZONAWS) {
             ArrayList<String> amazonFiles = amazonService.GetBucketFiles(s3Client, logCleanerConfig);
             amazonService.DownloadAllBucketFiles(s3Client, logCleanerConfig, amazonFiles);
-            logCompressionService.ExtractAllLogFiles(logCleanerConfig.getAWSOutputDirectory(), logCleanerConfig.getWorkingDirectory() + "\\Raw");
+            logCompressionService.ExtractAllLogFiles(logCleanerConfig.getWorkingDirectory() + "\\AWS", logCleanerConfig.getWorkingDirectory() + "\\Raw");
         } else {
             logCompressionService.ExtractAllLogFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getWorkingDirectory() + "\\Raw");
         }

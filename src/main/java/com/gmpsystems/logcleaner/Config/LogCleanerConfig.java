@@ -106,10 +106,6 @@ public class LogCleanerConfig {
         return AWSOutputDirectory;
     }
 
-    public String getBaseDirectory() {
-        return baseDirectory;
-    }
-
     public DatabaseType getDatabaseType() {
         return databaseType;
     }
