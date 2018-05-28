@@ -13,6 +13,7 @@ import com.gmpsystems.logcleaner.Services.LogCompressionService;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LogCleaner {
     public static void main(String[] args) {
@@ -145,6 +146,7 @@ public class LogCleaner {
         if (logCleanerConfig.getCleanerMode() == CleanerMode.AMAZONAWS) {
             ArrayList<String> amazonFiles = amazonService.GetBucketFiles(s3Client, logCleanerConfig);
             amazonService.DownloadAllBucketFiles(s3Client, logCleanerConfig, amazonFiles);
+            logCompressionService.ExtractAllLogFiles(logCleanerConfig.getAWSOutputDirectory(), logCleanerConfig.getWorkingDirectory() + "\\Raw");
         } else {
             logCompressionService.ExtractAllLogFiles(logCleanerConfig.getLogDirectory(), logCleanerConfig.getWorkingDirectory() + "\\Raw");
         }
@@ -160,7 +162,10 @@ public class LogCleaner {
         } else {
             directoryService.copyAllFiles(logCleanerConfig.getWorkingDirectory() + "\\Cleaned", logCleanerConfig.getLogOutputDirectory());
         }
-        //TODO: Upload new files to amazon AWS
+        if (logCleanerConfig.getCleanerMode() == CleanerMode.AMAZONAWS) {
+            List<File> amazonFiles = directoryService.getAllFilesInDirectoryAndSubdirectories(logCleanerConfig.getLogOutputDirectory());
+            amazonService.UploadAllBucketFiles2(s3Client, logCleanerConfig, amazonFiles);
+        }
     }
 
 

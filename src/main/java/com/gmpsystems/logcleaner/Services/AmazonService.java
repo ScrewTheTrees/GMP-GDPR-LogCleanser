@@ -61,6 +61,32 @@ public class AmazonService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void UploadAllBucketFiles2(AmazonS3 amazonS3, LogCleanerConfig logCleanerConfig, List<File> files) {
+        List<String> newFiles = new ArrayList<>();
+        for (File f : files)
+            newFiles.add(f.getAbsolutePath());
+
+        UploadAllBucketFiles(amazonS3, logCleanerConfig, newFiles);
+    }
+
+    public void UploadAllBucketFiles(AmazonS3 amazonS3, LogCleanerConfig logCleanerConfig, List<String> files) {
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+
+        for (String s : files) {
+            executor.execute(() -> UploadBucketFile(amazonS3, logCleanerConfig, s));
+        }
+        executor.shutdown();
+        while (!executor.isTerminated()) {
+        }
+        System.out.println("Finished uploading all files.");
+    }
+
+    public void UploadBucketFile(AmazonS3 amazonS3, LogCleanerConfig logCleanerConfig, String file) {
+        File f = new File(file);
+        System.out.println("Uploading file to bucket: " + f.getAbsolutePath());
+        String out = file.replace(logCleanerConfig.getLogOutputDirectory(), "").replace("\\", "/");
+        amazonS3.putObject(logCleanerConfig.getAWSBucketName(), logCleanerConfig.getAWSDirectory() + "New" + out, f);
     }
 }
